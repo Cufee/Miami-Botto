@@ -4,9 +4,5 @@ cogs/__pycache__
 __pycache__/*
 __pycache__
 
-#TOKEN
-token.txt
-TOKEN.txt
-
-#Mode selection
-mode.txt
+#Settings
+settings.json
