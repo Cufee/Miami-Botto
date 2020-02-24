@@ -2,13 +2,13 @@ import discord
 import os
 from discord.ext import commands
 
-token = 'NjgxNDUzMjAxNTAwOTMwMDUy.XlOrEg.q0nFvVwV4ToqFc6GMagFF2yK1YI'
+TOKEN = open(f'{os.path.dirname(os.path.realpath(__file__))}/TOKEN.txt', 'r').read()
 
 client = commands.Bot(command_prefix = '-')
 
 @client.event
 async def on_ready():
-    print('Botto online!')
+    print(f'{client.user.name} online!')
 
 async def on_command_error(ctx, error):
     print(f'Error! {error}')
@@ -47,4 +47,4 @@ for filename in os.listdir(f'{os.path.dirname(os.path.realpath(__file__))}/cogs'
     if filename.endswith('.py'):
         client.load_extension(f'cogs.{filename[:-3]}')
 
-client.run(token)
+client.run(TOKEN)
