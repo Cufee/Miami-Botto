@@ -10,12 +10,13 @@ with open(f'{os.path.dirname(os.path.realpath(__file__))}/settings.json') as f:
 TOKEN = settings["TOKEN"]
 mode = settings["mode"]
 prefix = settings["prefix"]
+default_game = settings["default_game"]
 client = commands.Bot(command_prefix = prefix)
 
 @client.event
 async def on_ready():
     print(f'{client.user.name} online!')
-    await client.change_presence(status=discord.Status.online, activity=discord.Game('with Rachels'))
+    await client.change_presence(status=discord.Status.online, activity=discord.Game(default_game))
 
 async def on_command_error(ctx, error):
     print(f'Error! {error}')
