@@ -14,7 +14,7 @@ class NAME(commands.Cog):
     #Commands
     @commands.command(aliases=[''])
     async def NAME(self, ctx, *, arg = 'null'):
-        pass
+        print('Ran NAME)
 
 def setup(client):
     client.add_cog(NAME(client))

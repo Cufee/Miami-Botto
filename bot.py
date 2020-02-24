@@ -4,7 +4,8 @@ from discord.ext import commands
 
 TOKEN = open(f'{os.path.dirname(os.path.realpath(__file__))}/TOKEN.txt', 'r').read()
 
-client = commands.Bot(command_prefix = '-')
+#Change to '-' for master
+client = commands.Bot(command_prefix = '.')
 
 #Startup
 @client.event

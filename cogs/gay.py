@@ -41,6 +41,7 @@ class gay(commands.Cog):
             await ctx.send('Are you?\nUse -gay @name')
         else:
             await ctx.send(random.choice(responses))
+        print('Ran gay')
 
 def setup(client):
     client.add_cog(gay(client))
