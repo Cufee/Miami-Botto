@@ -4,8 +4,10 @@ from discord.ext import commands
 
 TOKEN = open(f'{os.path.dirname(os.path.realpath(__file__))}/TOKEN.txt', 'r').read()
 
-#Change to '-' for master
-client = commands.Bot(command_prefix = '.')
+#Mode selection to adjust prefix
+mode = open(f'{os.path.dirname(os.path.realpath(__file__))}/mode.txt', 'r').read()
+if mode == 'master': client = commands.Bot(command_prefix = '-')
+if mode == 'staging': client = commands.Bot(command_prefix = '.')
 
 #Startup
 @client.event
