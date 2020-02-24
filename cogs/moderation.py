@@ -18,7 +18,7 @@ class moderation(commands.Cog):
     async def modtest(self, ctx, *, arg = 'null'):
         '''Test extension'''
         await ctx.send(arg)
-    print('Ran modtest')
+        print('Ran modtest')
 
 def setup(client):
     client.add_cog(moderation(client))
