@@ -10,6 +10,9 @@ client = commands.Bot(command_prefix = '-')
 async def on_ready():
     print('Botto online!')
 
+async def on_command_error(ctx, error):
+    print(f'Error! {error}')
+
 @client.command(hidden=True)
 async def load(ctx, extension):
     client.load_extension(f'cogs.{extension}')
@@ -33,14 +36,12 @@ async def reload(ctx, extension='null'):
         await ctx.send(f'Reloaded {extension} extension.')
 
 @client.command(hidden=True)
-async def listcogs(ctx, extension='null'):
-    if extension == 'null':
-        await ctx.send(f'No extension name specified.')
-    else:
-        cogs = []
-        for filename in os.listdir(f'{os.path.dirname(os.path.realpath(__file__))}/cogs'):
+async def listcogs(ctx):
+    cogs = []
+    for filename in os.listdir(f'{os.path.dirname(os.path.realpath(__file__))}/cogs'):
+        if filename.endswith('.py'):
             cogs.append(f'{filename[:-3]}')
-        await ctx.send(f'Found these cogs:\n{cogs}')
+    await ctx.send(f'Found these cogs:\n{cogs}')
 
 for filename in os.listdir(f'{os.path.dirname(os.path.realpath(__file__))}/cogs'):
     if filename.endswith('.py'):

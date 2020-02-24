@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-name = 'moderation'
+# Moderation cog
 
 class moderation(commands.Cog):
 
@@ -14,9 +14,6 @@ class moderation(commands.Cog):
         print(f'Moderation cog is ready!')
 
     #Commands
-    @commands.command(aliases=[''])
-    async def ping(self, ctx):
-        await ctx.send(f'Pong! My latency is {round(self.client.latency * 1000)}ms')
 
 def setup(client):
     client.add_cog(moderation(client))

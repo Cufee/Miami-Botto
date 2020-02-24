@@ -2,6 +2,8 @@ import discord
 import random
 from discord.ext import commands
 
+# Gay cog
+
 class gay(commands.Cog):
 
     def __init__(self, client):
