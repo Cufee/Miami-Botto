@@ -12,11 +12,12 @@ class gay(commands.Cog):
     #Events
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'Gay cog is ready!')
+        print(f'gay cog is ready.')
 
     #Commands
-    @commands.command(aliases=['whogay'])
+    @commands.command()
     async def gay(self, ctx, *, arg = 'null'):
+        '''Check if a user is gay.'''
         responses = ['As I see it, yes.',
                     'Ask again later.',
                     'Better not tell you now.',

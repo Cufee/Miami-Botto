@@ -11,7 +11,7 @@ class moderation(commands.Cog):
     #Events
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'Moderation cog is ready!')
+        print(f'moderation cog is ready.')
 
     #Commands
 

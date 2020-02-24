@@ -11,16 +11,18 @@ class bot_status(commands.Cog):
     #Events
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'bot_status cog is ready!')
+        print(f'bot_status cog is ready.')
 
     #Commands
-    @commands.command(aliases=[''])
+    @commands.command()
     async def setgame(self, ctx, *, game):
+        '''Set game playing status.'''
         await self.client.change_presence(status=discord.Status.idle, activity=discord.Game(game))
 
-    @commands.command(aliases=[''])
-    async def ping(self, ctx):
-        await ctx.send(f'Pong! My latency is {round(self.client.latency * 1000)}ms')
+    @commands.command(aliases=['ping'])
+    async def pulse(self, ctx):
+        '''Test if the bot is alive.'''
+        await ctx.send(f'I live! My latency is {round(self.client.latency * 1000)}ms')
 
 def setup(client):
     client.add_cog(bot_status(client))
