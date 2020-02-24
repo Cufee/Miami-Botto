@@ -6,13 +6,16 @@ TOKEN = open(f'{os.path.dirname(os.path.realpath(__file__))}/TOKEN.txt', 'r').re
 
 client = commands.Bot(command_prefix = '-')
 
+#Startup
 @client.event
 async def on_ready():
     print(f'{client.user.name} online!')
+    await client.change_presence(status=discord.Status.online, activity=discord.Game('with Rachels'))
 
 async def on_command_error(ctx, error):
     print(f'Error! {error}')
 
+#Cog managment
 @client.command(hidden=True)
 async def load(ctx, extension):
     client.load_extension(f'cogs.{extension}')
@@ -47,4 +50,5 @@ for filename in os.listdir(f'{os.path.dirname(os.path.realpath(__file__))}/cogs'
     if filename.endswith('.py'):
         client.load_extension(f'cogs.{filename[:-3]}')
 
+#Run
 client.run(TOKEN)
