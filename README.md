@@ -1,2 +1,2 @@
-# Botto Discord bot
+# Botto - Discord bot
  
