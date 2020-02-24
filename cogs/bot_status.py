@@ -21,7 +21,7 @@ class bot_status(commands.Cog):
 
     @commands.command(aliases=['ping'])
     async def pulse(self, ctx):
-        '''Test if the bot is alive. Returns ping.'''
+        '''Test if the bot is alive, returns ping in ms.'''
         await ctx.send(f'I live! My latency is {round(self.client.latency * 1000)}ms')
 
 def setup(client):
