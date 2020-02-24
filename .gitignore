@@ -1,5 +1,8 @@
-#Ignore Python cache
+#Python cache
 cogs/__pycache__/*
 cogs/__pycache__
 __pycache__/*
 __pycache__
+
+#TOKEN
+#TOKEN.txt
