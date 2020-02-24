@@ -1,0 +1,49 @@
+import discord
+import os
+from discord.ext import commands
+
+token = 'NjgxNDUzMjAxNTAwOTMwMDUy.XlOrEg.q0nFvVwV4ToqFc6GMagFF2yK1YI'
+
+client = commands.Bot(command_prefix = '-')
+
+@client.event
+async def on_ready():
+    print('Botto online!')
+
+@client.command(hidden=True)
+async def load(ctx, extension):
+    client.load_extension(f'cogs.{extension}')
+    await ctx.send(f'Loaded {extension} extension.')
+
+@client.command(hidden=True)
+async def unload(ctx, extension='null'):
+    if extension == 'null':
+        await ctx.send(f'No extension name specified.')
+    else:
+        client.unload_extension(f'cogs.{extension}')
+        await ctx.send(f'Unloaded {extension} extension.')
+
+@client.command(hidden=True)
+async def reload(ctx, extension='null'):
+    if extension == 'null':
+        await ctx.send(f'No extension name specified.')
+    else:
+        client.unload_extension(f'cogs.{extension}')
+        client.load_extension(f'cogs.{extension}')
+        await ctx.send(f'Reloaded {extension} extension.')
+
+@client.command(hidden=True)
+async def listcogs(ctx, extension='null'):
+    if extension == 'null':
+        await ctx.send(f'No extension name specified.')
+    else:
+        cogs = []
+        for filename in os.listdir(f'{os.path.dirname(os.path.realpath(__file__))}/cogs'):
+            cogs.append(f'{filename[:-3]}')
+        await ctx.send(f'Found these cogs:\n{cogs}')
+
+for filename in os.listdir(f'{os.path.dirname(os.path.realpath(__file__))}/cogs'):
+    if filename.endswith('.py'):
+        client.load_extension(f'cogs.{filename[:-3]}')
+
+client.run(token)
