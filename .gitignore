@@ -6,3 +6,6 @@ __pycache__
 
 #TOKEN
 TOKEN.txt
+
+#Mode selection
+mode.txt
