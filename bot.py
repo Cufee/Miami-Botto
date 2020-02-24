@@ -2,7 +2,7 @@ import discord
 import os
 import json
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 #Startup
 with open(f'{os.path.dirname(os.path.realpath(__file__))}/settings.json') as f:
@@ -13,13 +13,18 @@ prefix = settings["prefix"]
 default_game = settings["default_game"]
 client = commands.Bot(command_prefix = prefix)
 
+#Startup
 @client.event
 async def on_ready():
     print(f'{client.user.name} online!')
     await client.change_presence(status=discord.Status.online, activity=discord.Game(default_game))
 
-async def on_command_error(ctx, error):
-    print(f'Error! {error}')
+
+#Tasks
+@tasks.loop(seconds=10)
+async def change_status():
+    pass
+
 
 #Cog managment
 @client.command(hidden=True)
@@ -55,6 +60,7 @@ async def listcogs(ctx):
 for filename in os.listdir(f'{os.path.dirname(os.path.realpath(__file__))}/cogs'):
     if filename.endswith('.py'):
         client.load_extension(f'cogs.{filename[:-3]}')
+
 
 #Run
 client.run(TOKEN)
