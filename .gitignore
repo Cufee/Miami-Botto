@@ -5,7 +5,7 @@ __pycache__/*
 __pycache__
 
 #TOKEN
-TOKEN.txt
+token.txt
 
 #Mode selection
 mode.txt
