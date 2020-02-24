@@ -1,15 +1,17 @@
 import discord
 import os
+import json
+import discord
 from discord.ext import commands
 
-TOKEN = open(f'{os.path.dirname(os.path.realpath(__file__))}/TOKEN.txt', 'r').read()
-
-#Mode selection to adjust prefix
-mode = open(f'{os.path.dirname(os.path.realpath(__file__))}/mode.txt', 'r').read()
-if mode == 'master': client = commands.Bot(command_prefix = '-')
-if mode == 'staging': client = commands.Bot(command_prefix = '.')
-
 #Startup
+with open(f'{os.path.dirname(os.path.realpath(__file__))}/settings.json') as f:
+    settings = json.load(f)    
+TOKEN = settings["TOKEN"]
+mode = settings["mode"]
+prefix = settings["prefix"]
+client = commands.Bot(command_prefix = prefix)
+
 @client.event
 async def on_ready():
     print(f'{client.user.name} online!')
