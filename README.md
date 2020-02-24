@@ -1,2 +1,2 @@
-# Discord-Selfie-Bot
+# Botto Discord bot
  
