@@ -9,11 +9,11 @@ import json
     #Settings
 #Set simp_list_json_path
 global simp_list_json_path
-simp_list_json_path = f"{os.getcwd()}\\cogs\\simp\\simp_list.json"
+simp_list_json_path = f"{os.getcwd()}/cogs/simp/simp_list.json"
 
 #Set emote list
 global emote_list_json_path
-emote_list_json_path = f"{os.getcwd()}\\cogs\\simp\\guild_emotes.json"
+emote_list_json_path = f"{os.getcwd()}/cogs/simp/guild_emotes.json"
 
 
 #Loop to check if guild_id and user_id pair is in simp_list
