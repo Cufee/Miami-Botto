@@ -5,7 +5,8 @@ import discord
 from discord.ext import commands, tasks
 
 #Startup
-with open(f'{os.getcwd()}\\settings.json') as f:
+settings_path = f'{os.getcwd()}\\settings.json'
+with open(settings_path) as f:
     settings = json.load(f)    
 TOKEN = settings["TOKEN"]
 mode = settings["mode"]
