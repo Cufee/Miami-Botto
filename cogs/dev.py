@@ -14,7 +14,7 @@ class dev(commands.Cog):
         print(f'dev cog is ready.')
 
     #Commands
-    @commands.command()
+    @commands.command(hidden=True)
     #Gett current guid_id, channel_id, channel
     async def whereiam(self, ctx):
         guild_id = ctx.message.guild.id
@@ -22,7 +22,7 @@ class dev(commands.Cog):
         channel_id = ctx.message.channel.id
         await ctx.send(f"guild_id: {guild_id}, channel_id: {channel_id}, channel: {channel}")
 
-    @commands.command()
+    @commands.command(hidden=True)
     #Gett current guid_id, channel_id, channel
     async def listemoji(self, ctx):
         embed = discord.Embed(
@@ -33,12 +33,12 @@ class dev(commands.Cog):
             embed.add_field(name=emoji, value=emoji.id, inline=False)
         await self.client.say(embed=embed)
 
-    @commands.command()
+    @commands.command(hidden=True)
     #Gett current guid_id, channel_id, channel
     async def getid(self, ctx, arg:str):
             await ctx.send(f'{arg[3:-1]}')
 
-    @commands.command()
+    @commands.command(hidden=True)
     #Gett current guid_id, channel_id, channel
     async def split(self, ctx, arg:str):
             result = str(arg).split(':')
