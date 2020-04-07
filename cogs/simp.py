@@ -167,9 +167,9 @@ class simp(commands.Cog):
         if exists == True:
             result = remove_simp(guild_id, user_id)
             if result == 200:
-                await ctx.send(f'{arg} is now a registered simp!')
-            if result == 409:
-                await ctx.send(f'{arg} is already a registered simp!')
+                await ctx.send(f'{arg} is not a simp anymore :C')
+            if result == 404:
+                await ctx.send(f'{arg} is not a simp!')
             else:
                 await ctx.send(f'Weird... {result}')
         else:
