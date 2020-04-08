@@ -86,7 +86,7 @@ class simp(commands.Cog):
                 elif simp_role in str(message_author_roles):
                     logger('Removing reaction', '')
                     await last_message.remove_reaction(simp_emote, self.client.user)
-                    asyncio.sleep(0.25)
+                    asyncio.sleep()
                     logger('Adding reaction', '')
                     await message.add_reaction(simp_emote)
                 else:
