@@ -9,7 +9,7 @@ import asyncio
 
 #Debug mode for printig additional info
 global debug
-debug = False
+debug = True
 
 #Server settings json path
 global guild_settings_json
@@ -86,7 +86,6 @@ class simp(commands.Cog):
                 elif simp_role in str(message_author_roles):
                     logger('Removing reaction', '')
                     await last_message.remove_reaction(simp_emote, self.client.user)
-                    asyncio.sleep(1)
                     logger('Adding reaction', '')
                     await message.add_reaction(simp_emote)
                 else:
