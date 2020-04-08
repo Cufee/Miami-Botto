@@ -56,11 +56,6 @@ class simp(commands.Cog):
         channel = message.channel
         message_author = message.author
         message_author_roles = message.author.roles
-        message_history = []
-        async for old_message in channel.history(limit=5):
-            if old_message.author == message_author:
-                message_history.append(old_message)
-        last_message = message_history[1]
         
         #Ignore messages sent by this bot
         if message_author == self.client.user:
@@ -84,12 +79,19 @@ class simp(commands.Cog):
                 #Check if a user role is in ignored_roles
                     logger('User role is in ignored_roles', ignored_roles)
                 elif simp_role in str(message_author_roles):
-                    logger('Removing reaction', '')
-                    await last_message.remove_reaction(simp_emote, self.client.user)
+                    message_history = []
+                    async for old_message in channel.history(limit=5):
+                        if old_message.author == message_author:
+                            message_history.append(old_message)
+                    if len(message_history) > 1:
+                        last_message = message_history[1]
+                        logger('Removing reaction', '')
+                        await last_message.remove_reaction(simp_emote, self.client.user)
                     logger('Adding reaction', '')
                     await message.add_reaction(simp_emote)
                 else:
                     logger('User is not a simp', message_author)
+
 
     #Loops
     #@tasks.loop(seconds=5.0)
