@@ -9,7 +9,7 @@ import json
 
 #Debug mode for printig additional info
 global debug
-debug = True
+debug = False
 
 #Server settings json path
 global guild_settings_json
