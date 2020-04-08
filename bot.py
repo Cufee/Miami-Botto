@@ -18,7 +18,9 @@ client = commands.Bot(command_prefix = prefix)
 async def on_ready():
     print(f'{client.user.name} online!')
     await client.change_presence(status=discord.Status.online, activity=discord.Game(default_game))
-
+    for filename in os.listdir(f'{os.path.dirname(os.path.realpath(__file__))}/cogs'):
+        if filename.endswith('.py'):
+            client.load_extension(f'cogs.{filename[:-3]}')
 
 #Tasks
 @tasks.loop(seconds=10)
@@ -56,10 +58,6 @@ async def listcogs(ctx):
         if filename.endswith('.py'):
             cogs.append(f'{filename[:-3]}')
     await ctx.send(f'Found these cogs:\n{cogs}')
-
-for filename in os.listdir(f'{os.path.dirname(os.path.realpath(__file__))}/cogs'):
-    if filename.endswith('.py'):
-        client.load_extension(f'cogs.{filename[:-3]}')
 
 
 #Run
