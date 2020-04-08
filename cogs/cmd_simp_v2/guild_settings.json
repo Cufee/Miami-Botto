@@ -1,0 +1,26 @@
+{
+    "Guild Name": {
+        "guild_id": "your_guild_id",
+        "simp_enabled": "True",
+        "ignored_roles": "",
+        "simp_mod_role": "role_id",
+        "simp_role": "role_id",
+        "simp_emote": "emote_object"
+    },
+    "Testing Grounds": {
+        "guild_id": "681603130131218507",
+        "simp_enabled": true,
+        "ignored_roles": "",
+        "simp_mod_role": "",
+        "simp_role": "<Role id=697453611252318229 name='simp role'>",
+        "simp_emote": "<:yessir:696891841391624253>"
+    },
+    "Miami Rachel": {
+        "guild_id": "617216304063053864",
+        "simp_enabled": true,
+        "ignored_roles": "",
+        "simp_mod_role": "",
+        "simp_role": "<Role id=692609097211576351 name='THE SIMP'>",
+        "simp_emote": "<:pepesimp:689633151009554456>"
+    }
+}

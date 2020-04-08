@@ -35,13 +35,21 @@ class dev(commands.Cog):
 
     @commands.command(hidden=True)
     #Gett current guid_id, channel_id, channel
-    async def getid(self, ctx, arg:str):
-            await ctx.send(f'{arg[3:-1]}')
+    async def getemote(self, ctx, arg):
+        arg = str(arg)
+        print(arg)
+        await ctx.send(arg)
 
     @commands.command(hidden=True)
     #Gett current guid_id, channel_id, channel
     async def split(self, ctx, arg:str):
             result = str(arg).split(':')
+            await ctx.send(result)
+
+    @commands.command(hidden=True)
+    #Gett current guid_id, channel_id, channel
+    async def getroles(self, ctx):
+            result = ctx.message.author.roles
             await ctx.send(result)
 
 
