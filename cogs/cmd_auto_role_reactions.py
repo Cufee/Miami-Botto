@@ -50,11 +50,13 @@ class auto_role_reactions(commands.Cog):
             await channel.send(f'Message ID {message_id}')
 
         if message_id in reactions_message_ids:
+            print(f'Message was in reaction_messages {reactions_message_ids}')
             role = discord.utils.get(guild.roles, name=payload.emoji.name)
             if role != None:
                 await member.add_roles(role)
             else:
                 pass
+            
         else:
             pass
 
