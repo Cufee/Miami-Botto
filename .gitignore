@@ -9,3 +9,9 @@ settings.json
 
 #Cogs template
 cogs/template
+
+#Cogs data
+cogs/cmd_pin/*
+cogs/cmd_simp_v2/*
+cogs/cmd_role_reactions/*
+cogs/cmd_auto_role_reactions/*
