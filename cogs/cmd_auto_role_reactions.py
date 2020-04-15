@@ -80,25 +80,30 @@ class auto_role_reactions(commands.Cog):
 
     #Commands
     @commands.command(hidden=True)
-    async def arr(self, ctx, command=None, option=None):
+    async def msginit(self, ctx):
         guild_id = ''
-        if command != None:
-            if command == 'init':
-                await add_enabled_message(guild_id, ctx.message.id)
-                await ctx.send(f'Your last message was enrolled, feel free to edit it :)\nGuild {ctx.guild.id}\nMessage {ctx.message.id}')
-            elif command == 'remove':
-                if option == None:
-                    await ctx.send(f'I will need a message id as well, use ```mr-arr remove id```')
-                else:
-                    removed_bool = await remove_enabled_message(guild_id, option)
-                    if removed_bool == True:
-                        await ctx.send(f'Message with ID {option} was removed.')
-                    else:
-                        await ctx.send(f'Something failed, remove_enabled_message returned {removed_bool}. ```Your input was {option}```')
-            else:
-                await ctx.send('No such command')
+        await add_enabled_message(guild_id, ctx.message.id)
+        await ctx.send(f'Your last message was enrolled, feel free to edit it :)')
+
+    #Commands
+    @commands.command(hidden=True)
+    async def msgadd(self, ctx, msg_id):
+        guild_id = ''
+        await add_enabled_message(guild_id, msg_id)
+        await ctx.send(f'Your message {msg_id} was enrolled, feel free to edit it :)')
+
+    #Commands
+    @commands.command(hidden=True)
+    async def msgremove(self, ctx, option=None):
+        guild_id = ''
+        if option == None:
+            await ctx.send(f'I will need a message id as well, use ```mr-arr remove id```')
         else:
-            await ctx.send('Please specify a command')
+            removed_bool = await remove_enabled_message(guild_id, option)
+            if removed_bool == True:
+                await ctx.send(f'Message with ID {option} was removed.')
+            else:
+                await ctx.send(f'Something failed, remove_enabled_message returned {removed_bool}. ```Your input was {option}```')
 
 def setup(client):
     client.add_cog(auto_role_reactions(client))
