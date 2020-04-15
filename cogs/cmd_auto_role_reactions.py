@@ -42,6 +42,7 @@ class auto_role_reactions(commands.Cog):
         guild = discord.utils.find(lambda g: g.id == guild_id, self.client.guilds)
         member = discord.utils.find(lambda m: m.id == payload.user_id, guild.members)
         reactions_message_ids = await get_enabled_messages(guild_id)
+        print(reactions_message_ids)
 
         #Dev reaction
         if payload.emoji.name == 'dev':
@@ -56,7 +57,7 @@ class auto_role_reactions(commands.Cog):
                 await member.add_roles(role)
             else:
                 pass
-            
+
         else:
             pass
 
