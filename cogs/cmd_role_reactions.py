@@ -72,7 +72,7 @@ class role_reactions(commands.Cog):
             pass
 
     #Commands
-    @commands.command(aliases=[''])
+    @commands.command(hidden=True)
     async def rr(self, ctx, command = None):
         if command != None:
             if command == 'init':
