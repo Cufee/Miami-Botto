@@ -1,12 +1,10 @@
 import discord
 from discord.ext import commands, tasks
+import os
 
 async def get_enabled_messages(guild_id):
-    try:
-        with open('cmd_auto_role_reactions/messages.txt') as file:
-            reactions_message_ids = file.readlines()
-    except:
-        reactions_message_ids = ['699758973640900678']
+    with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/messages.txt") as file:
+        reactions_message_ids = file.readlines()
     return reactions_message_ids
 
 class auto_role_reactions(commands.Cog):
