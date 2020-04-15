@@ -13,7 +13,7 @@ async def add_enabled_message(guild_id, message_id):
 
 async def remove_enabled_message(guild_id, message_id):
     with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/messages.txt") as file:
-        reactions_message_ids = file.readlines()
+        reactions_message_ids = file.read().split(',')
     if message_id in reactions_message_ids:
         message_index = reactions_message_ids.index(message_id)
         reactions_message_ids = reactions_message_ids.pop(message_index)
