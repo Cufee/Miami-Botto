@@ -6,7 +6,6 @@ import os
 def get_message_settings(guild_id, message_id):
     guild_settings_path = f"{os.getcwd()}/cogs/cmd_role_reactions/guild_settings_beta.json"
     with open(guild_settings_path, 'r') as all_guild_settings_json:
-        print('sucvc')
         all_guild_settings = json.load(all_guild_settings_json)
 
     guild_id = f'{guild_id}'
