@@ -3,23 +3,29 @@ from discord.ext import commands, tasks
 import os
 
 async def get_enabled_messages(guild_id):
+    reactions_message_ids = []
     with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/messages.txt") as file:
-        reactions_message_ids = file.read().split(',')
+        for line in file:
+            final_data = line[:-1]
+            reactions_message_ids.append(final_data)
     return reactions_message_ids
 
 async def add_enabled_message(guild_id, message_id):
     with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/messages.txt", 'a') as file:
-        file.write("".join(f'{message_id}') + ",")
+        file.write(f'{message_id}\n')
 
 async def remove_enabled_message(guild_id, message_id):
+    reactions_message_ids = []
     with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/messages.txt") as file:
-        reactions_message_ids = file.read().split(',')
+        for line in file:
+            final_data = line[:-1]
+            reactions_message_ids.append(final_data)
     if message_id in reactions_message_ids:
         message_index = reactions_message_ids.index(message_id)
         reactions_message_ids = reactions_message_ids.pop(message_index)
-        with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/messages.txt", 'w') as file:
-            for msg_id in reactions_message_ids:
-                file.write("".join(f'{msg_id}') + ",")
+        with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/messages.txt", 'a') as file:
+            for msg in reactions_message_ids:
+                file.write(f'{msg}\n')
         return True
     else:
         return False
@@ -81,6 +87,7 @@ class auto_role_reactions(commands.Cog):
     #Commands
     @commands.command(hidden=True)
     async def msginit(self, ctx):
+        print('ran init')
         guild_id = ''
         await add_enabled_message(guild_id, ctx.message.id)
         await ctx.send(f'Your last message was enrolled, feel free to edit it :)')
