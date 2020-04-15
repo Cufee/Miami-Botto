@@ -9,7 +9,7 @@ async def get_enabled_messages(guild_id):
 
 async def add_enabled_message(guild_id, message_id):
     with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/messages.txt", 'a') as file:
-        file.write(f'{message_id}')
+        file.write("".join(f'{message_id}') + "\n")
 
 async def remove_enabled_message(guild_id, message_id):
     with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/messages.txt") as file:
