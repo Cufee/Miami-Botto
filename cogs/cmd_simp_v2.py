@@ -52,7 +52,7 @@ class simp(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        guild_id = f'{message.guild_id}'
+        guild_id = f'{message.guild.id}'
         channel = message.channel
         message_author = message.author
         message_author_roles = message.author.roles
