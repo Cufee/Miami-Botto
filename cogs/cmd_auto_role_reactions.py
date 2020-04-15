@@ -78,7 +78,7 @@ class auto_role_reactions(commands.Cog):
     #Commands
     @commands.command(hidden=True)
     async def arr(self, ctx, command=None, option=None):
-        guild_id = ctx.guild_id
+        guild_id = ''
         if command != None:
             if command == 'init':
                 await add_enabled_message(guild_id, ctx.message.id)
