@@ -42,6 +42,13 @@ class auto_role_reactions(commands.Cog):
         guild = discord.utils.find(lambda g: g.id == guild_id, self.client.guilds)
         member = discord.utils.find(lambda m: m.id == payload.user_id, guild.members)
         reactions_message_ids = await get_enabled_messages(guild_id)
+
+        #Dev reaction
+        if payload.emoji.name == 'dev':
+            print('detected dev emoji')
+            channel = await member.create_dm()
+            await channel.send(f'Message ID {message_id}')
+
         if message_id in reactions_message_ids:
             role = discord.utils.get(guild.roles, name=payload.emoji.name)
             if role != None:
@@ -58,11 +65,6 @@ class auto_role_reactions(commands.Cog):
         guild = discord.utils.find(lambda g: g.id == guild_id, self.client.guilds)
         member = discord.utils.find(lambda m: m.id == payload.user_id, guild.members)
         reactions_message_ids = await get_enabled_messages(guild_id)
-
-        #Dev reaction
-        if payload.emoji.name == 'dev':
-            channel = await member.create_dm()
-            await channel.send(f'Message ID {message_id}')
 
         if message_id in reactions_message_ids:
             role = discord.utils.get(guild.roles, name=payload.emoji.name)
