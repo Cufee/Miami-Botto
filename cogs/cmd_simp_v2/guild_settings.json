@@ -3,6 +3,7 @@
         "guild_id": "your_guild_id",
         "simp_enabled": "True",
         "ignored_roles": "",
+        "react_speed": "Number of last messages to remove reactions from",
         "simp_mod_role": "role_id",
         "simp_role": "role_id",
         "simp_emote": "emote_object"
@@ -11,6 +12,7 @@
         "guild_id": "681603130131218507",
         "simp_enabled": true,
         "ignored_roles": "",
+        "react_speed": "10",
         "simp_mod_role": "",
         "simp_role": "<Role id=697453611252318229 name='simp role'>",
         "simp_emote": "<:yessir:696891841391624253>"
@@ -19,6 +21,7 @@
         "guild_id": "617216304063053864",
         "simp_enabled": true,
         "ignored_roles": "",
+        "react_speed": "10",
         "simp_mod_role": "",
         "simp_role": "<Role id=692609097211576351 name='THE SIMP'>",
         "simp_emote": "<:pepesimp:689633151009554456>"
