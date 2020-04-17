@@ -51,11 +51,11 @@ class auto_role_reactions(commands.Cog):
         reactions_message_ids = await get_enabled_messages(guild_id)
         
         #Logic to prevent people from setting all the roles in one category
-        role_search_tag = payload.emoji.name[:6]
+        role_search_tag = payload.emoji.name[6:]
         member_roles = []
         for role in member.roles:
             member_roles.append(role.name)
-        r = re.compile(f'{role_search_tag}.*')
+        r = re.compile(f'.*{role_search_tag}')
         matched_roles = list(filter(r.match, member_roles))
 
         #Dev reaction
