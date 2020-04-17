@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands, tasks
 import os
+import re
 
 async def get_enabled_messages(guild_id):
     reactions_message_ids = []
@@ -48,7 +49,14 @@ class auto_role_reactions(commands.Cog):
         guild = discord.utils.find(lambda g: g.id == guild_id, self.client.guilds)
         member = discord.utils.find(lambda m: m.id == payload.user_id, guild.members)
         reactions_message_ids = await get_enabled_messages(guild_id)
-        print(reactions_message_ids)
+        
+        #Logic to prevent people from setting all the roles in one category
+        role_search_tag = payload.emoji.name[:6]
+        member_roles = []
+        for role in member.roles:
+            member_roles.append(role.name)
+        r = re.compile(f'{role_search_tag}.*')
+        matched_roles = list(filter(r.match, member_roles))
 
         #Dev reaction
         if payload.emoji.name == 'dev':
@@ -60,6 +68,10 @@ class auto_role_reactions(commands.Cog):
             print(f'Message was in reaction_messages {reactions_message_ids}')
             role = discord.utils.get(guild.roles, name=payload.emoji.name)
             if role != None:
+                #Logic to prevent people from setting all the roles in one category
+                for old_role in matched_roles:
+                    old_role = discord.utils.get(guild.roles, name=old_role)
+                    await member.remove_roles(old_role)
                 await member.add_roles(role)
             else:
                 pass
