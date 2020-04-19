@@ -65,6 +65,8 @@ class auto_role_reactions(commands.Cog):
             print('detected dev emoji')
             channel = await member.create_dm()
             await channel.send(f'Message ID {message_id}')
+            await message.remove_reaction(payload.emoji, member)
+            return
 
         role = discord.utils.get(guild.roles, name=payload.emoji.name)
         if message_id in reactions_message_ids:
