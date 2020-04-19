@@ -64,9 +64,9 @@ class auto_role_reactions(commands.Cog):
             channel = await member.create_dm()
             await channel.send(f'Message ID {message_id}')
 
+        role = discord.utils.get(guild.roles, name=payload.emoji.name)
         if message_id in reactions_message_ids:
-            print(f'Message was in reaction_messages {message_id}')
-            role = discord.utils.get(guild.roles, name=payload.emoji.name)
+            print(f'Message was in reaction_messages {message_id}, role {role}')
             if role != None:
                 #Logic to prevent people from setting all the roles in one category
                 for old_role in matched_roles:
@@ -76,7 +76,10 @@ class auto_role_reactions(commands.Cog):
                 await member.add_roles(role)
                 print(f'Added {role}')
             else:
-                pass
+                print(f'Removing reaction {payload.emoji.name} from {message_id}')
+                channel = self.client.get_channel(payload.channel_id)
+                message = await channel.fetch_message(message_id)
+                await message.remove_reaction(payload.emoji.name, member)
         else:
             pass
 
