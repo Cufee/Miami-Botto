@@ -79,7 +79,7 @@ class auto_role_reactions(commands.Cog):
                 print(f'Removing reaction {payload.emoji.name} from {message_id}')
                 channel = self.client.get_channel(payload.channel_id)
                 message = await channel.fetch_message(message_id)
-                await message.remove_reaction(payload.emoji.name, member)
+                await message.remove_reaction(payload.emoji, member)
         else:
             pass
 
