@@ -45,6 +45,8 @@ class auto_role_reactions(commands.Cog):
     async def on_raw_reaction_add(self, payload):
         print('reaction')
         message_id = f'{payload.message_id}'
+        channel = self.client.get_channel(payload.channel_id)
+        message = await channel.fetch_message(message_id)
         guild_id = payload.guild_id
         guild = discord.utils.find(lambda g: g.id == guild_id, self.client.guilds)
         member = discord.utils.find(lambda m: m.id == payload.user_id, guild.members)
@@ -65,7 +67,7 @@ class auto_role_reactions(commands.Cog):
             await channel.send(f'Message ID {message_id}')
 
         role = discord.utils.get(guild.roles, name=payload.emoji.name)
-        if message_id in reactions_message_ids:
+        if message_id in reactions_message_ids and payload.emoji.name in message.clean_content:
             print(f'Message was in reaction_messages {message_id}, role {role}')
             if role != None:
                 #Logic to prevent people from setting all the roles in one category
@@ -77,11 +79,10 @@ class auto_role_reactions(commands.Cog):
                 print(f'Added {role}')
             else:
                 print(f'Removing reaction {payload.emoji.name} from {message_id}')
-                channel = self.client.get_channel(payload.channel_id)
-                message = await channel.fetch_message(message_id)
                 await message.remove_reaction(payload.emoji, member)
         else:
-            pass
+            print(f'Removing reaction {payload.emoji.name} from {message_id}')
+            await message.remove_reaction(payload.emoji, member)
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
