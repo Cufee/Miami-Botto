@@ -7,23 +7,24 @@ import os
 import json
 
 
-#Startup
+# Startup
 with open(f'{os.path.dirname(os.path.realpath(__file__))}/settings.json') as f:
-    settings = json.load(f)    
+    settings = json.load(f)
 TOKEN = settings["TOKEN"]
 mode = settings["mode"]
 prefix = settings["prefix"]
 default_game = settings["default_game"]
-client = commands.Bot(command_prefix = prefix, case_insensitive=True)
+client = commands.Bot(command_prefix=prefix, case_insensitive=True)
 
 
-#Startup
+# Startup
 @client.event
 async def on_ready():
     print(f'{client.user.name} online!')
     for filename in os.listdir(f'{os.path.dirname(os.path.realpath(__file__))}/cogs'):
         if filename.endswith('.py'):
             client.load_extension(f'cogs.{filename[:-3]}')
+
 
 @client.event
 async def on_command_error(ctx, error):
@@ -33,21 +34,22 @@ async def on_command_error(ctx, error):
     raise error
 
 
-#Tasks
-#Root tasks go here
+# Tasks
+# Root tasks go here
 
 
-#Root Commands
-#Commands go here
+# Root Commands
+# Commands go here
 
 
-#Cog managment
+# Cog managment
 @client.command(hidden=True)
 @commands.is_owner()
 async def load(ctx, extension):
     await ctx.message.delete()
     client.load_extension(f'cogs.{extension}')
     await ctx.send(f'Loaded {extension} extension.', delete_after=10)
+
 
 @client.command(hidden=True)
 @commands.is_owner()
@@ -58,6 +60,7 @@ async def unload(ctx, extension='null'):
     else:
         client.unload_extension(f'cogs.{extension}')
         await ctx.send(f'Unloaded {extension} extension.', delete_after=10)
+
 
 @client.command(hidden=True)
 @commands.is_owner()
@@ -70,6 +73,7 @@ async def reload(ctx, extension='null'):
         client.load_extension(f'cogs.{extension}')
         await ctx.send(f'Reloaded {extension} extension.', delete_after=10)
 
+
 @client.command(hidden=True)
 @commands.is_owner()
 async def listcogs(ctx):
@@ -81,5 +85,5 @@ async def listcogs(ctx):
     await ctx.send(f'Found these cogs:\n{cogs}', delete_after=10)
 
 
-#Run
+# Run
 client.run(TOKEN)
