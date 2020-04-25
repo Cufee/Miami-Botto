@@ -1,7 +1,8 @@
 import discord
 import re
 import asyncio
-from discord.ext import commands
+from discord.ext import commands, tasks
+import datetime
 
 # Setup Guild
 guild_id = ''
@@ -13,6 +14,7 @@ class secret_chats(commands.Cog):
 
     def __init__(self, client):
         self.client = client
+        self.message_cleanup.start()
 
     # Events
     @commands.Cog.listener()
@@ -21,7 +23,6 @@ class secret_chats(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-
         channel = message.channel
         message_text = message.clean_content
         if channel.name == 'selfie-channel' and ':beta_feature:' not in message_text:
@@ -31,16 +32,34 @@ class secret_chats(commands.Cog):
                 attachments.append('link found')
             if not attachments:
                 emoji = discord.utils.get(
-                    message.guild.emojis, name='removing')
+                    message.guild.emojis, name='trg_removing30')
                 await message.add_reaction(emoji)
-                await asyncio.sleep(1800)
-                await message.delete()
             else:
                 emoji = discord.utils.get(
                     message.guild.emojis, name='beta_feature')
                 await message.add_reaction(emoji)
 
-    # Commands
+    # Tasks
+
+    @tasks.loop(minutes=15)
+    async def message_cleanup(self):
+        print('clean up')
+        time_interval = 31
+        time_before = datetime.datetime.now() - datetime.timedelta(minutes=time_interval)
+        all_channels = self.client.get_all_channels()
+        all_messages = []
+        for channel in all_channels:
+            if str(channel.type) == 'text':
+                messages = await channel.history(before=time_before).flatten()
+                all_messages = all_messages + messages
+        for message in all_messages:
+            remove_emoji = 'trg_removing'
+            for reaction in message.reactions:
+                if remove_emoji in str(reaction) and reaction.me:
+                    await message.delete()
+        print('clean up done')
+
+        # Commands
     @commands.command(aliases=['pt'])
     async def purgetext(self, ctx, message_count):
         channel = ctx.channel
