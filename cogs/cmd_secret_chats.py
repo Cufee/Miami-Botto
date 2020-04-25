@@ -68,6 +68,7 @@ class secret_chats(commands.Cog):
         all_channels = self.client.get_all_channels()
         all_messages = []
         for channel in all_channels:
+            print(channel)
             if str(channel.type) == 'text':
                 messages = await channel.history(before=time_before).flatten()
                 all_messages = all_messages + messages
