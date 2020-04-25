@@ -35,7 +35,7 @@ class secret_chats(commands.Cog):
                 emoji = discord.utils.get(
                     message.guild.emojis, name='trg_removing30')
                 await message.add_reaction(emoji)
-                asyncio.sleep(1800)
+                await asyncio.sleep(1800)
                 await message.delete()
             else:
                 emoji = discord.utils.get(
