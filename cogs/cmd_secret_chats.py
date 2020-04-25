@@ -21,6 +21,7 @@ class secret_chats(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
+
         channel = message.channel
         message_text = message.clean_content
         if channel.name == 'selfie-channel' and ':beta_feature:' not in message_text:
@@ -29,6 +30,9 @@ class secret_chats(commands.Cog):
             if re_filter.match(message_text):
                 attachments.append('link found')
             if not attachments:
+                emoji = discord.utils.get(
+                    message.guild.emojis, name='removing')
+                await message.add_reaction(emoji)
                 await asyncio.sleep(1800)
                 await message.delete()
             else:
