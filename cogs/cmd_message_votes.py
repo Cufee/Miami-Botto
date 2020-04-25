@@ -18,7 +18,8 @@ class message_votes(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         channel = message.channel
-        print(channel, message)
+        attachments = message.attachments
+        print(attachments)
 
 
 def setup(client):
