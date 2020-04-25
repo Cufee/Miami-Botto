@@ -63,19 +63,19 @@ class secret_chats(commands.Cog):
     async def message_cleanup(self):
         print('clean up')
         time_interval = 31
-        time_before = datetime.datetime.now() - datetime.timedelta(minutes=time_interval)
-        time_after = datetime.datetime.now() - datetime.timedelta(minutes=time_interval*2)
+        time_now = datetime.datetime.now()
+        time_before = time_now - datetime.timedelta(minutes=time_interval)
+        time_after = time_now - datetime.timedelta(minutes=time_interval*3)
         all_channels = self.client.get_all_channels()
         all_messages = []
         for channel in all_channels:
-            print(channel)
             if str(channel.type) == 'text':
-                messages = await channel.history(before=time_before).flatten()
+                messages = await channel.history(before=time_before, after=time_after).flatten()
                 all_messages = all_messages + messages
         for message in all_messages:
             remove_emoji = 'trg_removing'
             for reaction in message.reactions:
-                if remove_emoji in str(reaction) and reaction.me:
+                if remove_emoji in str(reaction.emoji) and reaction.me:
                     await message.delete()
         print('clean up done')
 
