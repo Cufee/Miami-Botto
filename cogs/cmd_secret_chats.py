@@ -1,6 +1,7 @@
 import discord
 import re
 import asyncio
+import sys
 from discord.ext import commands, tasks
 import datetime
 
@@ -68,12 +69,11 @@ class secret_chats(commands.Cog):
         time_after = time_now - datetime.timedelta(minutes=time_interval*3)
         all_channels = self.client.get_all_channels()
         all_messages = []
-        for channel in all_channels:
-            if isinstance(channel, discord.channel.TextChannel):
-                messages = await channel.history(before=time_before, after=time_after).flatten()
-                all_messages = all_messages + messages
         try:
-
+            for channel in all_channels:
+                if isinstance(channel, discord.channel.TextChannel):
+                    messages = await channel.history(before=time_before, after=time_now).flatten()
+                    all_messages = all_messages + messages
             for message in all_messages:
                 remove_emoji = 'trg_removing'
                 for reaction in message.reactions:
@@ -81,7 +81,8 @@ class secret_chats(commands.Cog):
                         await message.delete()
             print('clean up done')
         except:
-            print('clean up failed')
+            e = sys.exc_info()[0]
+            print(e, 'clean up failed')
 
     # Commands
     @commands.command(aliases=['pt'])
