@@ -1,4 +1,5 @@
 import discord
+import re
 from discord.ext import commands, tasks
 
 
@@ -26,6 +27,11 @@ class message_votes(commands.Cog):
         channel = message.channel.name
         attachments = message.attachments
         vote_channels = await get_vote_channels('guild_id here')
+        re_filter = re.compile('https:\/\/....')
+
+        if re_filter.match(message.clean_content):
+            attachments.append('link found')
+
         if channel in vote_channels and attachments:
             print('new message in memes with an attachment')
             emotes = [discord.utils.find(message.guild.emojis, name='upvote'), discord.utils.find(
