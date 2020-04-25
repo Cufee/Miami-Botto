@@ -72,7 +72,7 @@ class secret_chats(commands.Cog):
         try:
             for channel in all_channels:
                 if isinstance(channel, discord.channel.TextChannel):
-                    messages = await channel.history(before=time_before, after=time_now).flatten()
+                    messages = await channel.history(before=time_now, after=time_after).flatten()
                     all_messages = all_messages + messages
             for message in all_messages:
                 remove_emoji = 'trg_removing'
