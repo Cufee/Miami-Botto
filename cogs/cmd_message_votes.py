@@ -33,7 +33,6 @@ class message_votes(commands.Cog):
             if emotes:
                 for emote in emotes:
                     await message.add_reaction(emote)
-                    print(f'added {emote}')
             else:
                 print('failed to find emotes')
         else:
