@@ -66,11 +66,11 @@ class secret_chats(commands.Cog):
         time_now = datetime.datetime.now()
         time_before = time_now - datetime.timedelta(minutes=time_interval)
         time_after = time_now - datetime.timedelta(minutes=time_interval*3)
-        all_channels = self.client.get_all_channels()
+        all_channels = await self.client.get_all_channels()
         all_messages = []
         for channel in all_channels:
             if str(channel.type) == 'text':
-                messages = await channel.history(before=time_before, after=time_after)
+                messages = await channel.history(before=time_before, after=time_after).flatten()
                 all_messages = all_messages + messages
         try:
 
