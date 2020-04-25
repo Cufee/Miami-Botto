@@ -77,7 +77,7 @@ class secret_chats(commands.Cog):
             for message in all_messages:
                 remove_emoji = 'trg_removing'
                 for reaction in message.reactions:
-                    async for user in reaction.users:
+                    async for user in reaction.users():
                         if user == self.client.user and remove_emoji in str(reaction):
                             await message.delete()
             print('clean up done')
