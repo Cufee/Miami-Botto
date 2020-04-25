@@ -72,12 +72,12 @@ class secret_chats(commands.Cog):
         try:
             for channel in all_channels:
                 if isinstance(channel, discord.channel.TextChannel):
-                    messages = await channel.history(before=time_now, after=time_after).flatten()
+                    messages = await channel.history(before=time_now).flatten()
                     all_messages = all_messages + messages
             for message in all_messages:
                 remove_emoji = 'trg_removing'
                 for reaction in message.reactions:
-                    if remove_emoji in str(reaction.emoji) and reaction.me:
+                    if remove_emoji in str(reaction) and reaction.me:
                         await message.delete()
             print('clean up done')
         except:
