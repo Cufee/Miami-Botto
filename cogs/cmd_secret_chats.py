@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-#Setup Guild
+# Setup Guild
 guild_id = ''
 
 
@@ -12,7 +12,7 @@ class secret_chats(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    #Events
+    # Events
     @commands.Cog.listener()
     async def on_ready(self):
         print(f'secret_chats cog is ready.')
@@ -21,8 +21,8 @@ class secret_chats(commands.Cog):
     async def on_message(self, message):
         pass
 
+    # Commands
 
-    #Commands
 
 def setup(client):
     client.add_cog(secret_chats(client))

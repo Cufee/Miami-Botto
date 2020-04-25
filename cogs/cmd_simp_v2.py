@@ -1,32 +1,36 @@
-#Discord py
+# Discord py
 import discord
 from discord.ext import commands, tasks
 
-#Cog specific
+# Cog specific
 import os
 import json
 import asyncio
 
-#Debug mode for printig additional info
+# Debug mode for printig additional info
 global debug
 debug = True
 
-#Server settings json path
+# Server settings json path
 global guild_settings_json
 guild_settings_json = f"{os.getcwd()}/cogs/cmd_simp_v2/guild_settings.json"
+
 
 def logger(msg, data):
     if debug == True:
         print(f'{msg} {data}({type(data)})')
-    else: pass
+    else:
+        pass
 
-#Fetch guild settings
+# Fetch guild settings
+
+
 def fetch_guild_settings(guild_id):
-    #Open json file and find settings by guild_id
+    # Open json file and find settings by guild_id
     with open(guild_settings_json, 'r') as all_guild_settings_json:
         all_guild_settings = json.load(all_guild_settings_json)
     for guild in all_guild_settings:
-        #Return settings as Object and status code
+        # Return settings as Object and status code
         if all_guild_settings.get(guild).get('guild_id') == guild_id:
             guild_settings = all_guild_settings.get(guild)
             status_code = 200
@@ -43,8 +47,8 @@ class simp(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    #Events
-    #@commands.Cog.listener()
+    # Events
+    # @commands.Cog.listener()
     @commands.Cog.listener()
     async def on_ready(self):
         print(f'simp_v2 cog is ready.')
@@ -56,15 +60,15 @@ class simp(commands.Cog):
         channel = message.channel
         message_author = message.author
         message_author_roles = message.author.roles
-        
-        #Ignore messages sent by this bot
+
+        # Ignore messages sent by this bot
         if message_author == self.client.user:
             logger('Message was sent by', self.client.user)
         else:
-            #Fetch guild settings
+            # Fetch guild settings
             guild_settings, status_code = fetch_guild_settings(guild_id)
             if status_code != 200:
-            #Check response code
+                # Check response code
                 logger('fetch_guild_settings returned', status_code)
             else:
                 simp_enabled = guild_settings.get('simp_enabled')
@@ -73,10 +77,10 @@ class simp(commands.Cog):
                 simp_emote = guild_settings.get('simp_emote')
 
                 if simp_enabled == False:
-                #Check if simp module is enabled on a server
+                    # Check if simp module is enabled on a server
                     logger('simp_enabled', simp_enabled)
                 elif all(role in ignored_roles for role in str(message_author_roles)) == True:
-                #Check if a user role is in ignored_roles
+                    # Check if a user role is in ignored_roles
                     logger('User role is in ignored_roles', ignored_roles)
                 elif simp_role in str(message_author_roles):
                     message_history = []
@@ -92,16 +96,14 @@ class simp(commands.Cog):
                 else:
                     logger('User is not a simp', message_author)
 
+    # Loops
+    # @tasks.loop(seconds=5.0)
 
-    #Loops
-    #@tasks.loop(seconds=5.0)
-
-
-    #Commands
-    #@commands.command()
+    # Commands
+    # @commands.command()
     @commands.command(aliases=['simp?'])
     async def _simp(self, ctx):
-    #Check if user has simp role
+        # Check if user has simp role
         guild_id = f'{ctx.message.guild.id}'
         message_author_roles = f'{ctx.message.author.roles}'
         guild_settings, status_code = fetch_guild_settings(guild_id)

@@ -1,0 +1,36 @@
+import discord
+from discord.ext import commands, tasks
+import os
+import csv
+
+
+def add_poll_channel(guild_id, channel_id):
+    with open(f'{os.getcwd()}/cogs/cmd_poll_channels/guild_settings.csv') as settings:
+        readCSV = csv.reader(settings)
+        raw_settings = settings
+
+
+def remove_poll_channel(guild_id, channel_id):
+    pass
+
+
+class poll_channels(commands.Cog):
+
+    def __init__(self, client):
+        self.client = client
+
+    # Events
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print(f'role_reactions cog is ready.')
+
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self, payload):
+
+        # Commands
+    @commands.command(hidden=True)
+    async def msgremove(self, ctx, option=None):
+
+
+def setup(client):
+    client.add_cog(poll_channels(client))
