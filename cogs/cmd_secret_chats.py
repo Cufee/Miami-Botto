@@ -69,7 +69,7 @@ class secret_chats(commands.Cog):
         all_channels = self.client.get_all_channels()
         all_messages = []
         for channel in all_channels:
-            if isinstance(channel, 'text'):
+            if isinstance(channel, discord.channel.TextChannel):
                 messages = await channel.history(before=time_before, after=time_after).flatten()
                 all_messages = all_messages + messages
         try:
