@@ -68,11 +68,12 @@ class secret_chats(commands.Cog):
         time_after = time_now - datetime.timedelta(minutes=time_interval*3)
         all_channels = self.client.get_all_channels()
         all_messages = []
+        for channel in all_channels:
+            if str(channel.type) == 'text':
+                messages = await channel.history(before=time_before, after=time_after).flatten()
+                all_messages = all_messages + messages
         try:
-            for channel in all_channels:
-                if str(channel.type) == 'text':
-                    messages = await channel.history(before=time_before, after=time_after).flatten()
-                    all_messages = all_messages + messages
+
             for message in all_messages:
                 remove_emoji = 'trg_removing'
                 for reaction in message.reactions:
