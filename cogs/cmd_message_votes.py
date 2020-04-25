@@ -28,11 +28,14 @@ class message_votes(commands.Cog):
         vote_channels = await get_vote_channels('guild_id here')
         if channel in vote_channels and attachments:
             print('new message in memes with an attachment')
-            emotes = [discord.utils.get(message.guild.emojis, name='upvote'), discord.utils.get(
+            emotes = [discord.utils.find(message.guild.emojis, name='upvote'), discord.utils.find(
                 message.guild.emojis, name='downvote')]
-            for emote in emotes:
-                await message.add_reaction(emote)
-                print(f'added {emote}')
+            if emotes:
+                for emote in emotes:
+                    await message.add_reaction(emote)
+                    print(f'added {emote}')
+            else:
+                print('failed to find emotes')
         else:
             pass
 
