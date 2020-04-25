@@ -34,7 +34,7 @@ class message_votes(commands.Cog):
 
         if channel in vote_channels and attachments:
             print('new message in memes with an attachment')
-            emotes = [discord.utils.find(message.guild.emojis, name='upvote'), discord.utils.find(
+            emotes = [discord.utils.get(message.guild.emojis, name='upvote'), discord.utils.get(
                 message.guild.emojis, name='downvote')]
             if emotes:
                 for emote in emotes:
