@@ -34,7 +34,7 @@ class secret_chats(commands.Cog):
             else:
                 emoji = discord.utils.get(
                     message.guild.emojis, name='beta_feature')
-                message.add_reaction(emoji)
+                await message.add_reaction(emoji)
 
     # Commands
     @commands.command(aliases=['pt'])
