@@ -70,7 +70,7 @@ class secret_chats(commands.Cog):
         all_messages = []
         for channel in all_channels:
             if str(channel.type) == 'text':
-                messages = await channel.history(before=time_before).flatten()
+                messages = await channel.history(before=time_before, after=time_after)
                 all_messages = all_messages + messages
         try:
 
