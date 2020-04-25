@@ -15,7 +15,7 @@ class secret_chats(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-        self.message_cleanup.start()
+        # self.message_cleanup.start()
 
     # Events
     @commands.Cog.listener()
@@ -35,6 +35,8 @@ class secret_chats(commands.Cog):
                 emoji = discord.utils.get(
                     message.guild.emojis, name='trg_removing30')
                 await message.add_reaction(emoji)
+                asyncio.sleep(1800)
+                await message.delete()
             else:
                 emoji = discord.utils.get(
                     message.guild.emojis, name='beta_feature')
@@ -72,13 +74,13 @@ class secret_chats(commands.Cog):
         try:
             for channel in all_channels:
                 if isinstance(channel, discord.channel.TextChannel):
-                    messages = await channel.history(before=time_now, after=time_after).flatten()
+                    messages = await channel.history().flatten()
                     all_messages = all_messages + messages
             for message in all_messages:
                 remove_emoji = 'trg_removing'
                 for reaction in message.reactions:
                     if remove_emoji in str(reaction) and reaction.me:
-                        await message.delete()
+                        await reaction.message.delete()
             print('clean up done')
         except:
             e = sys.exc_info()[0]
