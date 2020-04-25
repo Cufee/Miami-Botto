@@ -14,8 +14,10 @@ class error_handle(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
+        await ctx.message.delete()
         if isinstance(error, commands.CommandNotFound):
-            await ctx.send('Command not found.')
+            await ctx.send('Command not found.', delete_after=5)
+        raise error
 
     # Commands
     @commands.command(aliases=[''])
