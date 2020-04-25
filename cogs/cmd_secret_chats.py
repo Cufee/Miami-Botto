@@ -39,6 +39,24 @@ class secret_chats(commands.Cog):
                     message.guild.emojis, name='beta_feature')
                 await message.add_reaction(emoji)
 
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self, payload):
+        message_id = f'{payload.message_id}'
+        channel = self.client.get_channel(payload.channel_id)
+        message = await channel.fetch_message(message_id)
+        guild_id = payload.guild_id
+        guild = discord.utils.find(
+            lambda g: g.id == guild_id, self.client.guilds)
+        member = discord.utils.find(
+            lambda m: m.id == payload.user_id, guild.members)
+        reaction = discord.utils.get(
+            message.guild.emojis, name='trg_removing30')
+        for role in member.roles:
+            if role.name[-4:] == '_mod' and 'trg_removing' in payload.emoji.name:
+                await message.add_reaction(reaction)
+                await message.remove_reaction(payload.emoji, member)
+                break
+
     # Tasks
 
     @tasks.loop(minutes=15)
@@ -46,11 +64,12 @@ class secret_chats(commands.Cog):
         print('clean up')
         time_interval = 31
         time_before = datetime.datetime.now() - datetime.timedelta(minutes=time_interval)
+        time_after = datetime.datetime.now() - datetime.timedelta(minutes=time_interval*2)
         all_channels = self.client.get_all_channels()
         all_messages = []
         for channel in all_channels:
             if str(channel.type) == 'text':
-                messages = await channel.history(before=time_before).flatten()
+                messages = await channel.history(after=time_after, before=time_before).flatten()
                 all_messages = all_messages + messages
         for message in all_messages:
             remove_emoji = 'trg_removing'
@@ -59,7 +78,7 @@ class secret_chats(commands.Cog):
                     await message.delete()
         print('clean up done')
 
-        # Commands
+    # Commands
     @commands.command(aliases=['pt'])
     async def purgetext(self, ctx, message_count):
         channel = ctx.channel
@@ -67,11 +86,9 @@ class secret_chats(commands.Cog):
             async for message in channel.history(limit=int(message_count)):
                 message_text = message.clean_content
                 attachments = message.attachments
-
                 re_filter = re.compile('https:\/\/....')
                 if re_filter.match(message_text):
                     attachments.append('link found')
-
                 if not attachments:
                     await message.delete()
                 else:
