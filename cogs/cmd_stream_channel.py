@@ -85,7 +85,7 @@ class cmd_stream_channel(commands.Cog):
                             if member.mentioned_in(old_message):
                                 print(f'deleting post for {member}')
                                 await old_message.delete()
-                        await channel.send(f'@here\n{member.mention} is live on {activity.platform}!\n{activity.name}\n{activity.url}')
+                        await channel.send(f'{member.mention} is live on {activity.platform}!\n{activity.name}\n{activity.url}')
             return
         else:
             pass
