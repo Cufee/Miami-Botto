@@ -38,19 +38,22 @@ class cmd_stream_channel(commands.Cog):
         is_live = False
         for activity in activities_before:
             if isinstance(activity, discord.Streaming):
+                print(f'{member} was live')
                 was_live = True
                 break
         for activity in activities_after:
             if isinstance(activity, discord.Streaming):
+                print(f'{member} is live')
                 is_live = True
                 break
 
         if was_live and is_live:
-            print(f'{member} was live and is live')
+            print(f'{member} is still streaming')
             return
         if was_live and not is_live:
             for old_message in messages:
                 if member.mentioned_in(old_message):
+                    print(f'deleting post for {member}')
                     await old_message.delete()
             print(f'{member} stopped streaming')
             return
@@ -69,8 +72,9 @@ class cmd_stream_channel(commands.Cog):
                     if post:
                         for old_message in messages:
                             if member.mentioned_in(old_message):
+                                print(f'deleting post for {member}')
                                 await old_message.delete()
-                        await channel.send(f'@here\n{member.mention} is live on {activity.platform}!\n{activity.url}')
+                        await channel.send(f'@here\n{member.mention} is live on {activity.platform}!\n{activity.name}\n{activity.url}')
             return
         else:
             pass
