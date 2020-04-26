@@ -57,7 +57,7 @@ class cmd_stream_channel(commands.Cog):
                     for activity in activities_after:
                         if isinstance(activity, discord.Streaming):
                             print(f'making a new post for {member}')
-                            await channel.send(f'@here\n{member.mention} is live on {activity.platform}!\n{activity.name}\n{activity.url}')
+                            await channel.send(f'@here\n{member.mention} is live on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
                     return
             return
 
