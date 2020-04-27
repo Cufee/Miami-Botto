@@ -24,9 +24,15 @@ class cmd_stream_channel(commands.Cog):
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
         member = after
+        guild = after.guild
+
+        ignored_role = discord.utils.get(
+            guild.roles, name='live-streams-ignored')
+        if ignored_role in member.roles:
+            return
+
         activities_after = after.activities
         activities_before = before.activities
-        guild = after.guild
         channel = discord.utils.get(
             guild.channels, name='live-streams')
         if channel:
