@@ -3,18 +3,12 @@ from discord.ext import commands, tasks
 import os
 import re
 import rapidjson
+
 from cogs.core_logger.logger import Logger
+from cogs.core_multi_guild.guild_settings_parser import GetSettings
+
 logger = Logger()
-
-
-async def settings_parser(guild_id):
-    # Parse settings per guild
-    with open(f'{os.path.dirname(os.path.realpath(__file__))}/cogs/core_multi_guild/cache/guild_settings.json') as settings_json:
-        try:
-            guild_settings = rapidjson.load(settings_json).get(guild_id)
-        except:
-            guild_settings = rapidjson.load(settings_json).get('default')
-    return guild_settings
+settings = GetSettings()
 
 
 async def get_enabled_messages(guild_id):
@@ -65,7 +59,7 @@ class auto_role_reactions(commands.Cog):
         channel = self.client.get_channel(payload.channel_id)
         message = await channel.fetch_message(message_id)
         guild_id = payload.guild_id
-        guild_settings = await settings_parser(guild_id)
+        guild_settings = await settings.parse(payload.guild)
         guild = discord.utils.find(
             lambda g: g.id == guild_id, self.client.guilds)
         member = discord.utils.find(
