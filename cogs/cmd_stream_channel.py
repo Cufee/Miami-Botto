@@ -65,35 +65,36 @@ class cmd_stream_channel(commands.Cog):
                     await old_message.delete()
             return
 
-        # Check if member in voice channel in current guild
-        dm_message = f':exploding_head: Wow, cool stream!\n\nIt will be announced in #{channel_name} on {guild} if you join a voice channel on our server during your stream :)'
-        if member.voice == None:
-            # Remove post
-            for old_message in messages:
-                if member in old_message.mentions:
-                    await old_message.delete()
-            # Send DM
-            dm_channel = await member.create_dm()
-            time_check = datetime.utcnow() - timedelta(minutes=15)
-            dm_history = await dm_channel.history(after=time_check).flatten()
-            if dm_history:
-                return
-            await dm_channel.send(dm_message)
-            return
-        elif member.voice.channel.guild != guild:
-            # Remove post
-            for old_message in messages:
-                if member in old_message.mentions:
-                    await old_message.delete()
-            # Send DM
-            dm_channel = await member.create_dm()
-            time_check = datetime.utcnow() - timedelta(minutes=15)
-            dm_history = await dm_channel.history(after=time_check).flatten()
-            if dm_history:
-                return
-            await dm_channel.send(dm_message)
-            return
-        # Determine user status change
+        # Generates a lot of spam, disabling
+        # # Check if member in voice channel in current guild
+        # dm_message = f':exploding_head: Wow, cool stream!\n\nIt will be announced in #{channel_name} on {guild} if you join a voice channel on our server during your stream :)'
+        # if member.voice == None:
+        #     # Remove post
+        #     for old_message in messages:
+        #         if member in old_message.mentions:
+        #             await old_message.delete()
+        #     # Send DM
+        #     dm_channel = await member.create_dm()
+        #     time_check = datetime.utcnow() - timedelta(minutes=15)
+        #     dm_history = await dm_channel.history(after=time_check).flatten()
+        #     if dm_history:
+        #         return
+        #     await dm_channel.send(dm_message)
+        #     return
+        # elif member.voice.channel.guild != guild:
+        #     # Remove post
+        #     for old_message in messages:
+        #         if member in old_message.mentions:
+        #             await old_message.delete()
+        #     # Send DM
+        #     dm_channel = await member.create_dm()
+        #     time_check = datetime.utcnow() - timedelta(minutes=15)
+        #     dm_history = await dm_channel.history(after=time_check).flatten()
+        #     if dm_history:
+        #         return
+        #     await dm_channel.send(dm_message)
+        #     return
+        # # Determine user status change
         was_live = False
         is_live = False
         for activity in activities_before:
@@ -142,30 +143,30 @@ class cmd_stream_channel(commands.Cog):
         else:
             pass
 
-    @commands.Cog.listener()
-    async def on_voice_state_update(self, member, before, after):
-        guild = member.guild
-        all_activities = member.activities
-        streaming = False
-        for activity in all_activities:
-            if isinstance(activity, discord.Streaming):
-                streaming = True
-                break
-            continue
-        if not streaming:
-            return
-        if after.channel is None:
-            role = discord.utils.get(guild.roles, name='refresh_event')
-            await member.add_roles(role)
-            await asyncio.sleep(1)
-            await member.remove_roles(role)
-            return
-        if after.channel.guild is guild:
-            role = discord.utils.get(guild.roles, name='refresh_event')
-            await member.add_roles(role)
-            await asyncio.sleep(1)
-            await member.remove_roles(role)
-            return
+    # @commands.Cog.listener()
+    # async def on_voice_state_update(self, member, before, after):
+    #     guild = member.guild
+    #     all_activities = member.activities
+    #     streaming = False
+    #     for activity in all_activities:
+    #         if isinstance(activity, discord.Streaming):
+    #             streaming = True
+    #             break
+    #         continue
+    #     if not streaming:
+    #         return
+    #     if after.channel is None:
+    #         role = discord.utils.get(guild.roles, name='refresh_event')
+    #         await member.add_roles(role)
+    #         await asyncio.sleep(1)
+    #         await member.remove_roles(role)
+    #         return
+    #     if after.channel.guild is guild:
+    #         role = discord.utils.get(guild.roles, name='refresh_event')
+    #         await member.add_roles(role)
+    #         await asyncio.sleep(1)
+    #         await member.remove_roles(role)
+    #         return
 
 
 def setup(client):
