@@ -4,6 +4,8 @@ import asyncio
 import sys
 from discord.ext import commands, tasks
 import datetime
+from cogs.core_logger.logger import Logger
+logger = Logger()
 
 # Setup Guild
 guild_id = ''
@@ -20,7 +22,7 @@ class secret_chats(commands.Cog):
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'secret_chats cog is ready.')
+        logger.log(f'secret_chats cog is ready.')
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -64,7 +66,7 @@ class secret_chats(commands.Cog):
 
     @tasks.loop(minutes=15)
     async def message_cleanup(self):
-        print('clean up')
+        logger.log('clean up')
         time_interval = 31
         time_now = datetime.datetime.now()
         time_before = time_now - datetime.timedelta(minutes=time_interval)
@@ -81,10 +83,10 @@ class secret_chats(commands.Cog):
                 for reaction in message.reactions:
                     if remove_emoji in str(reaction) and reaction.me:
                         await reaction.message.delete()
-            print('clean up done')
+            logger.log('clean up done')
         except:
             e = sys.exc_info()[0]
-            print(e, 'clean up failed')
+            logger.log(f'{e}\nclean up failed')
 
     # Commands
     @commands.command(aliases=['pt'])

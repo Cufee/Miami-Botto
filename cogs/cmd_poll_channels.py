@@ -2,6 +2,8 @@ import discord
 from discord.ext import commands, tasks
 import os
 import csv
+from cogs.core_logger.logger import Logger
+logger = Logger()
 
 
 def add_poll_channel(guild_id, channel_id):
@@ -22,14 +24,16 @@ class poll_channels(commands.Cog):
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'role_reactions cog is ready.')
+        logger.log(f'role_reactions cog is ready.')
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
+        pass
 
-        # Commands
+    # Commands
     @commands.command(hidden=True)
     async def msgremove(self, ctx, option=None):
+        pass
 
 
 def setup(client):

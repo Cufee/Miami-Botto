@@ -1,0 +1,68 @@
+{
+    "default": {
+        "name": "New guild detected, using default settings",
+        "feature_flags": {
+            "cmd_message_votes": {
+                "name": "Message Votes",
+                "enabled": false
+            },
+            "cmd_auto_role_reactions": {
+                "name": "Reactive Roles",
+                "enabled": false
+            },
+            "cmd_poll_channels": {
+                "name": "Poll Channels",
+                "enabled": false
+            },
+            "cmd_secret_chats": {
+                "name": "Secret Chats",
+                "enabled": false
+            },
+            "cmd_simp_v2": {
+                "name": "Simp Detector",
+                "enabled": false
+            },
+            "cmd_stream_channel": {
+                "name": "Stream Announcements",
+                "enabled": false
+            }
+        },
+        "information": {
+            "date_joined": null,
+            "date_left": null
+        }
+    },
+    "617216304063053864": {
+        "name": "Miami Rachel",
+        "feature_flags": {
+            "cmd_message_votes": {
+                "name": "Message Votes",
+                "enabled": true
+            },
+            "cmd_auto_role_reactions": {
+                "name": "Reactive Roles",
+                "enabled": true
+            },
+            "cmd_poll_channels": {
+                "name": "Poll Channels",
+                "enabled": true
+            },
+            "cmd_secret_chats": {
+                "name": "Secret Chats",
+                "enabled": true
+            },
+            "cmd_simp_v2": {
+                "name": "Simp Detector",
+                "enabled": true
+            },
+            "cmd_stream_channel": {
+                "name": "Stream Announcements",
+                "enabled": true
+            }
+        },
+        "information": {
+            "date_joined": null,
+            "date_left": null
+        }
+    }
+}

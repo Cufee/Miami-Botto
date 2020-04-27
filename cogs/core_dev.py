@@ -1,5 +1,19 @@
+import rapidjson
+import os
 import discord
 from discord.ext import commands
+from cogs.core_logger.logger import Logger
+logger = Logger()
+
+
+async def settings_parser(guild_id):
+    # Parse settings per guild
+    with open(f'{os.path.dirname(os.path.realpath(__file__))}/cogs/core_multi_guild/cache/guild_settings.json') as settings_json:
+        try:
+            guild_settings = rapidjson.load(settings_json).get(guild_id)
+        except:
+            guild_settings = rapidjson.load(settings_json).get('default')
+    return guild_settings
 
 # Dev cog
 
@@ -12,10 +26,11 @@ class dev(commands.Cog):
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'dev cog is ready.')
+        logger.log(f'dev cog is ready.')
 
     # Commands
     @commands.command(hidden=True)
+    @commands.is_owner()
     # Gett current guid_id, channel_id, channel
     async def whereiam(self, ctx):
         guild_id = ctx.message.guild.id
@@ -24,6 +39,7 @@ class dev(commands.Cog):
         await ctx.send(f"guild_id: {guild_id}, channel_id: {channel_id}, channel: {channel}")
 
     @commands.command(hidden=True)
+    @commands.is_owner()
     # Gett current guid_id, channel_id, channel
     async def listemoji(self, ctx):
         embed = discord.Embed(
@@ -35,19 +51,22 @@ class dev(commands.Cog):
         await self.client.say(embed=embed)
 
     @commands.command(hidden=True)
+    @commands.is_owner()
     # Gett current guid_id, channel_id, channel
     async def getemote(self, ctx, arg):
         arg = str(arg)
-        print(arg)
+        logger.log(arg)
         await ctx.send(arg)
 
     @commands.command(hidden=True)
+    @commands.is_owner()
     # Gett current guid_id, channel_id, channel
     async def split(self, ctx, arg: str):
         result = str(arg).split(':')
         await ctx.send(result)
 
     @commands.command(hidden=True)
+    @commands.is_owner()
     # Gett current guid_id, channel_id, channel
     async def getroles(self, ctx):
         result = ctx.message.author.roles

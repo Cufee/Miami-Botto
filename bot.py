@@ -1,15 +1,15 @@
+import rapidjson
+import os
 import discord
 import discord
 from discord.ext import commands, tasks
 from itertools import cycle
-
-import os
-import json
-
+from cogs.core_logger.logger import Logger
+logger = Logger()
 
 # Startup
 with open(f'{os.path.dirname(os.path.realpath(__file__))}/settings.json') as f:
-    settings = json.load(f)
+    settings = rapidjson.load(f)
 TOKEN = settings["TOKEN"]
 mode = settings["mode"]
 prefix = settings["prefix"]
@@ -17,14 +17,31 @@ default_game = settings["default_game"]
 client = commands.Bot(command_prefix=prefix, case_insensitive=True)
 
 
+async def settings_parser():
+    with open(f'{os.path.dirname(os.path.realpath(__file__))}/cogs/core_multi_guild/cache/feature_list.json') as settings_json:
+        settings = rapidjson.load(settings_json)
+    return settings
+
+
 # Startup
 @client.event
 async def on_ready():
-    print(f'{client.user.name} online!')
+    logger.log(f'{client.user.name} online!')
+    settings = await settings_parser()
     for filename in os.listdir(f'{os.path.dirname(os.path.realpath(__file__))}/cogs'):
         if filename.endswith('.py'):
-            client.load_extension(f'cogs.{filename[:-3]}')
-
+            if filename.startswith('core_'):
+                client.load_extension(f'cogs.{filename[:-3]}')
+                logger.log(f'{filename[:-3]} was loaded')
+                continue
+            cog_settings = settings.get(filename[:-3])
+            cog_name = cog_settings.get('name')
+            is_enabled = cog_settings.get(f'enabled_{mode}')
+            if is_enabled:
+                client.load_extension(f'cogs.{filename[:-3]}')
+                logger.log(f'{cog_name} was loaded')
+            else:
+                logger.log(f'{cog_name} is disabled')
 
 # Tasks
 # Root tasks go here

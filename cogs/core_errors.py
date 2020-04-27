@@ -1,5 +1,7 @@
 import discord
 from discord.ext import commands, tasks
+from cogs.core_logger.logger import Logger
+logger = Logger()
 
 
 class error_handle(commands.Cog):
@@ -10,7 +12,7 @@ class error_handle(commands.Cog):
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'error_handle cog is ready.')
+        logger.log(f'error_handle cog is ready.')
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
@@ -21,8 +23,9 @@ class error_handle(commands.Cog):
 
     # Commands
     @commands.command(aliases=[''])
+    @commands.is_owner()
     async def error_handle(self, ctx, *, arg='null'):
-        print('Ran error_handle')
+        logger.log('Ran error_handle')
 
 
 def setup(client):

@@ -2,11 +2,23 @@ import discord
 from discord.ext import commands, tasks
 import os
 import re
+from cogs.core_logger.logger import Logger
+logger = Logger()
+
+
+async def settings_parser(guild_id):
+    # Parse settings per guild
+    with open(f'{os.path.dirname(os.path.realpath(__file__))}/cogs/core_multi_guild/cache/guild_settings.json') as settings_json:
+        try:
+            guild_settings = rapidjson.load(settings_json).get(guild_id)
+        except:
+            guild_settings = rapidjson.load(settings_json).get('default')
+    return guild_settings
 
 
 async def get_enabled_messages(guild_id):
     reactions_message_ids = []
-    with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/messages.txt") as file:
+    with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/{guild_id}.txt") as file:
         for line in file:
             final_data = line[:-1]
             reactions_message_ids.append(final_data)
@@ -14,20 +26,20 @@ async def get_enabled_messages(guild_id):
 
 
 async def add_enabled_message(guild_id, message_id):
-    with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/messages.txt", 'a') as file:
+    with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/{guild_id}.txt", 'a') as file:
         file.write(f'{message_id}\n')
 
 
 async def remove_enabled_message(guild_id, message_id):
     reactions_message_ids = []
-    with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/messages.txt") as file:
+    with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/{guild_id}.txt") as file:
         for line in file:
             final_data = line[:-1]
             reactions_message_ids.append(final_data)
     if message_id in reactions_message_ids:
         message_index = reactions_message_ids.index(message_id)
         reactions_message_ids = reactions_message_ids.pop(message_index)
-        with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/messages.txt", 'a') as file:
+        with open(f"{os.getcwd()}/cogs/cmd_auto_role_reactions/{guild_id}.txt", 'a') as file:
             for msg in reactions_message_ids:
                 file.write(f'{msg}\n')
         return True
@@ -43,15 +55,16 @@ class auto_role_reactions(commands.Cog):
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'role_reactions cog is ready.')
+        logger.log(f'role_reactions cog is ready.')
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
-        print('reaction')
+        logger.log('reaction')
         message_id = f'{payload.message_id}'
         channel = self.client.get_channel(payload.channel_id)
         message = await channel.fetch_message(message_id)
         guild_id = payload.guild_id
+        guild_settings = await settings_parser(guild_id)
         guild = discord.utils.find(
             lambda g: g.id == guild_id, self.client.guilds)
         member = discord.utils.find(
@@ -60,7 +73,7 @@ class auto_role_reactions(commands.Cog):
 
         # Dev reaction
         if payload.emoji.name == 'dev':
-            print('detected dev emoji')
+            logger.log('detected dev emoji')
             channel = await member.create_dm()
             await channel.send(f'Message ID {message_id}')
             await message.remove_reaction(payload.emoji, member)
@@ -79,7 +92,7 @@ class auto_role_reactions(commands.Cog):
         if message_id in reactions_message_ids:
             # Check if emoji is in message content
             if payload.emoji.name in message.clean_content:
-                print(
+                logger.log(
                     f'Message was in reaction_messages {message_id}, role {role}')
                 if role != None:
                     # Logic to prevent people from setting all the roles in one category
@@ -87,15 +100,15 @@ class auto_role_reactions(commands.Cog):
                         old_role = discord.utils.get(
                             guild.roles, name=old_role)
                         await member.remove_roles(old_role)
-                        print(f'Removed {old_role}')
+                        logger.log(f'Removed {old_role}')
                     await member.add_roles(role)
-                    print(f'Added {role}')
+                    logger.log(f'Added {role}')
                 else:
-                    print(
+                    logger.log(
                         f'Removing reaction {payload.emoji.name} from {message_id}')
                     await message.remove_reaction(payload.emoji, member)
             else:
-                print(
+                logger.log(
                     f'Removing reaction {payload.emoji.name} from {message_id}')
                 await message.remove_reaction(payload.emoji, member)
         else:
@@ -123,15 +136,15 @@ class auto_role_reactions(commands.Cog):
     # Commands
     @commands.command(hidden=True)
     async def msginit(self, ctx):
-        print('ran init')
-        guild_id = ''
+        logger.log('ran init')
+        guild_id = ctx.guild.id
         await add_enabled_message(guild_id, ctx.message.id)
         await ctx.send(f'Your last message was enrolled, feel free to edit it :)')
 
     # Commands
     @commands.command(hidden=True)
     async def msgadd(self, ctx, msg_id):
-        guild_id = ''
+        guild_id = ctx.guild.id
         if msg_id != None and msg_id != '':
             await add_enabled_message(guild_id, msg_id)
             await ctx.send(f'Your message {msg_id} was enrolled, feel free to edit it :)')
@@ -141,7 +154,7 @@ class auto_role_reactions(commands.Cog):
     # Commands
     @commands.command(hidden=True)
     async def msgremove(self, ctx, option=None):
-        guild_id = ''
+        guild_id = ctx.guild.id
         if option == None:
             await ctx.send(f'I will need a message id as well, use ```mr-arr remove id```')
         else:

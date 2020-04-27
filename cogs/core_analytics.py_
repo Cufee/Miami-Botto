@@ -1,5 +1,7 @@
 import discord
 from discord.ext import commands
+from cogs.core_logger.logger import Logger
+logger = Logger()
 
 # Dev cog
 
@@ -12,7 +14,7 @@ class analytics(commands.Cog):
     # Cog loaded
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'analytics cog is ready.')
+        logger.log(f'analytics cog is ready.')
 
     # on_typing
     @commands.Cog.listener()

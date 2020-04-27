@@ -1,11 +1,13 @@
 # Discord py
+import asyncio
+import json
+import os
 import discord
 from discord.ext import commands, tasks
+from cogs.core_logger.logger import Logger
+logger = Logger()
 
 # Cog specific
-import os
-import json
-import asyncio
 
 # Debug mode for printig additional info
 global debug
@@ -14,13 +16,6 @@ debug = True
 # Server settings json path
 global guild_settings_json
 guild_settings_json = f"{os.getcwd()}/cogs/cmd_simp_v2/guild_settings.json"
-
-
-def logger(msg, data):
-    if debug == True:
-        print(f'{msg} {data}({type(data)})')
-    else:
-        pass
 
 # Fetch guild settings
 
@@ -51,8 +46,7 @@ class simp(commands.Cog):
     # @commands.Cog.listener()
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'simp_v2 cog is ready.')
-        print(f'logger enabled: {debug}')
+        logger.log(f'simp_v2 cog is ready.')
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -63,13 +57,13 @@ class simp(commands.Cog):
 
         # Ignore messages sent by this bot
         if message_author == self.client.user:
-            logger('Message was sent by', self.client.user)
+            logger.log(f'Message was sent by {self.client.user}')
         else:
             # Fetch guild settings
             guild_settings, status_code = fetch_guild_settings(guild_id)
             if status_code != 200:
                 # Check response code
-                logger('fetch_guild_settings returned', status_code)
+                logger.log(f'fetch_guild_settings returned {status_code}')
             else:
                 simp_enabled = guild_settings.get('simp_enabled')
                 ignored_roles = guild_settings.get('ignored_roles')
@@ -78,10 +72,11 @@ class simp(commands.Cog):
 
                 if simp_enabled == False:
                     # Check if simp module is enabled on a server
-                    logger('simp_enabled', simp_enabled)
+                    logger.log(f'simp_enabled {simp_enabled}')
                 elif all(role in ignored_roles for role in str(message_author_roles)) == True:
                     # Check if a user role is in ignored_roles
-                    logger('User role is in ignored_roles', ignored_roles)
+                    logger.log(
+                        f'User role is in ignored_roles {ignored_roles}')
                 elif simp_role in str(message_author_roles):
                     message_history = []
                     async for old_message in channel.history(limit=5):
@@ -89,12 +84,12 @@ class simp(commands.Cog):
                             message_history.append(old_message)
                     if len(message_history) > 1:
                         last_message = message_history[1]
-                        logger('Removing reaction', '')
+                        logger.log(f'Removing reaction')
                         await last_message.remove_reaction(simp_emote, self.client.user)
-                    logger('Adding reaction', '')
+                    logger.log('Adding reaction')
                     await message.add_reaction(simp_emote)
                 else:
-                    logger('User is not a simp', message_author)
+                    pass
 
     # Loops
     # @tasks.loop(seconds=5.0)
@@ -109,7 +104,7 @@ class simp(commands.Cog):
         guild_settings, status_code = fetch_guild_settings(guild_id)
         simp_role = guild_settings.get('simp_role')
         if status_code != 200:
-            logger('fetch_guild_settings returned', status_code)
+            logger.log(f'fetch_guild_settings returned {status_code}')
             result = False
         elif simp_role in message_author_roles:
             result = True
