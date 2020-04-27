@@ -59,12 +59,12 @@ class auto_role_reactions(commands.Cog):
         channel = self.client.get_channel(payload.channel_id)
         message = await channel.fetch_message(message_id)
         guild_id = payload.guild_id
-        guild_settings = await settings.parse(payload.guild)
         guild = discord.utils.find(
             lambda g: g.id == guild_id, self.client.guilds)
         member = discord.utils.find(
             lambda m: m.id == payload.user_id, guild.members)
         reactions_message_ids = await get_enabled_messages(guild_id)
+        guild_settings = await settings.parse(member.guild)
 
         # Dev reaction
         if payload.emoji.name == 'dev':
