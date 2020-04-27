@@ -50,20 +50,20 @@ class cmd_stream_channel(commands.Cog):
         if was_live and is_live:
             print(f'{member} is still streaming')
             for old_message in messages:
-                if member.mentioned_in(old_message):
+                if member in old_message.mentions:
                     print(f'there is a post for {member} already, skipping')
                     return
                 else:
                     for activity in activities_after:
                         if isinstance(activity, discord.Streaming):
                             print(f'making a new post for {member}')
-                            await channel.send(f'{member.mention} is live on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
+                            await channel.send(f'@here\n{member.mention} is live on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
                     return
             return
 
         if was_live and not is_live:
             for old_message in messages:
-                if member.mentioned_in(old_message):
+                if member in old_message.mentions:
                     print(f'deleting post for {member}')
                     await old_message.delete()
             print(f'{member} stopped streaming')
@@ -82,10 +82,10 @@ class cmd_stream_channel(commands.Cog):
                         post = False
                     if post:
                         for old_message in messages:
-                            if member.mentioned_in(old_message):
+                            if member in old_message.mentions:
                                 print(f'deleting post for {member}')
                                 await old_message.delete()
-                        await channel.send(f'{member.mention} is live on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
+                        await channel.send(f'@here\n{member.mention} is live on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
             return
         else:
             pass
