@@ -1,8 +1,6 @@
 import discord
 import re
 from discord.ext import commands, tasks
-from cogs.core_logger.logger import Logger
-logger = Logger()
 
 
 async def get_vote_channels(guild_id):
@@ -20,7 +18,7 @@ class message_votes(commands.Cog):
     # @commands.Cog.listener()
     @commands.Cog.listener()
     async def on_ready(self):
-        logger.log(f'help cog is ready.')
+        print(f'help cog is ready.')
 
     # Events
     # @commands.Cog.listener()
@@ -35,14 +33,14 @@ class message_votes(commands.Cog):
             attachments.append('link found')
 
         if channel in vote_channels and attachments:
-            logger.log('new message in memes with an attachment')
+            print('new message in memes with an attachment')
             emotes = [discord.utils.get(message.guild.emojis, name='upvote'), discord.utils.get(
                 message.guild.emojis, name='downvote')]
             if emotes:
                 for emote in emotes:
                     await message.add_reaction(emote)
             else:
-                logger.log('failed to find emotes')
+                print('failed to find emotes')
         else:
             pass
 
