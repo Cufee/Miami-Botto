@@ -117,13 +117,22 @@ class cmd_stream_channel(commands.Cog):
                 logger.log(f'making a new post for {member}')
                 await channel.send(f'@here\n{member.mention} is live on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
             return
-        # If user stopped streaming, delete message
+        # If user stopped streaming, wait and check their status again
         if was_live and not is_live:
-            for old_message in messages:
-                if member in old_message.mentions:
-                    logger.log(f'deleting post for {member}')
-                    await old_message.delete()
             logger.log(f'{member} stopped streaming')
+            asyncio.sleep(600)
+            current_activities = member.activities
+            messages = await channel.history().flatten()
+            is_live = False
+            for activity in current_activities:
+                if isinstance(activity, discord.Streaming):
+                    is_live = True
+                    break
+            if not is_live:
+                for old_message in messages:
+                    if member in old_message.mentions:
+                        logger.log(f'deleting post for {member}')
+                        await old_message.delete()
             return
         # If user started streaming, make a new post
         if not was_live and is_live:
