@@ -2,8 +2,12 @@ import rapidjson
 import os
 import discord
 from discord.ext import commands
+
 from cogs.core_logger.logger import Logger
+from cogs.core_multi_guild.guild_settings_parser import GetSettings
+
 logger = Logger()
+settings = GetSettings()
 
 
 async def settings_parser(guild_id):
@@ -71,6 +75,29 @@ class dev(commands.Cog):
     async def getroles(self, ctx):
         result = ctx.message.author.roles
         await ctx.send(result)
+
+    @commands.command(hidden=True)
+    @commands.is_owner()
+    async def toggle(self, ctx, feature):
+        key = 'enabled'
+        feature = f'cmd_{feature}'
+        guild = ctx.guild
+        result = await settings.update_feature(guild, feature, key)
+        if result is None:
+            await ctx.send(f'Unable to toggle {feature}, not a bool.')
+            return
+        await ctx.send(f'{feature} was set to {result}')
+
+    @commands.command(hidden=True, aliases=['update-feature'])
+    @commands.is_owner()
+    async def update_feature(self, ctx, feature, key, value):
+        feature = f'cmd_{feature}'
+        guild = ctx.guild
+        result = await settings.update_feature(guild, feature, key, value)
+        if result is None:
+            await ctx.send(f'Unable to toggle {feature}, result was {result}.')
+            return
+        await ctx.send(f'{feature} was set to {result}')
 
 
 def setup(client):

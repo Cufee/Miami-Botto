@@ -13,4 +13,4 @@ settings.json
 cogs/template
 
 #Cogs data
-cogs/cmd_auto_role_reactions/messages.txt
+cogs/cmd_auto_role_reactions/*.txt

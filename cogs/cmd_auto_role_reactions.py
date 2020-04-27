@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands, tasks
 import os
 import re
+import rapidjson
 from cogs.core_logger.logger import Logger
 logger = Logger()
 

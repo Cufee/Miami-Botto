@@ -24,7 +24,8 @@
             },
             "cmd_stream_channel": {
                 "name": "Stream Announcements",
-                "enabled": false
+                "enabled": false,
+                "channel_name": "live-streams"
             }
         },
         "information": {
@@ -57,12 +58,46 @@
             },
             "cmd_stream_channel": {
                 "name": "Stream Announcements",
-                "enabled": true
+                "enabled": true,
+                "channel_name": "live-streams"
             }
         },
         "information": {
             "date_joined": null,
             "date_left": null
+        }
+    },
+    "681603130131218507": {
+        "name": "Testing Grounds",
+        "feature_flags": {
+            "cmd_message_votes": {
+                "name": "Message Votes",
+                "enabled": true
+            },
+            "cmd_auto_role_reactions": {
+                "name": "Reactive Roles",
+                "enabled": true
+            },
+            "cmd_poll_channels": {
+                "name": "Poll Channels",
+                "enabled": true
+            },
+            "cmd_secret_chats": {
+                "name": "Secret Chats",
+                "enabled": true
+            },
+            "cmd_simp_v2": {
+                "name": "Simp Detector",
+                "enabled": true
+            },
+            "cmd_stream_channel": {
+                "name": "Stream Announcements",
+                "enabled": true,
+                "channel_name": "test-live"
+            }
+        },
+        "information": {
+            "date_joined": "04/27/20 at 11:48"
         }
     }
 }
