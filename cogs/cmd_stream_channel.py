@@ -25,21 +25,24 @@ class cmd_stream_channel(commands.Cog):
     async def on_member_update(self, before, after):
         member = after
         guild = after.guild
-
-        ignored_role = discord.utils.get(
-            guild.roles, name='live-streams-ignored')
-        if ignored_role in member.roles:
-            return
-
         activities_after = after.activities
         activities_before = before.activities
         channel = discord.utils.get(
             guild.channels, name='live-streams')
+        # Get channel message history, if a channel exists
         if channel:
             messages = await channel.history().flatten()
         else:
             messages = []
-
+        # Ignored role
+        ignored_role = discord.utils.get(
+            guild.roles, name='live-streams-ignored')
+        if ignored_role in member.roles:
+            for old_message in messages:
+                if member in old_message.mentions:
+                    await old_message.delete()
+            return
+        # Determine user status change
         was_live = False
         is_live = False
         for activity in activities_before:
@@ -52,7 +55,7 @@ class cmd_stream_channel(commands.Cog):
                 print(f'{member} is live')
                 is_live = True
                 break
-
+        # If user status was not changed, check for an existing post and skip or make a new one
         if was_live and is_live:
             print(f'{member} is still streaming')
             for old_message in messages:
@@ -66,7 +69,7 @@ class cmd_stream_channel(commands.Cog):
                             await channel.send(f'@here\n{member.mention} is live on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
                     return
             return
-
+        # If user stopped streaming, delete message
         if was_live and not is_live:
             for old_message in messages:
                 if member in old_message.mentions:
@@ -74,7 +77,7 @@ class cmd_stream_channel(commands.Cog):
                     await old_message.delete()
             print(f'{member} stopped streaming')
             return
-
+        # If user started streaming, make a new post
         if not was_live and is_live:
             print(f'{member} started streaming!')
             for activity in activities_after:
