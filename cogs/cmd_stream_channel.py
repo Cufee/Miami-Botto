@@ -4,10 +4,8 @@ from discord.ext import commands, tasks
 
 # Cog specific
 import os
-import json
 import asyncio
 from datetime import datetime, timedelta
-import rapidjson
 from cogs.core_logger.logger import Logger
 from cogs.core_multi_guild.guild_settings_parser import GetSettings
 
@@ -29,7 +27,8 @@ class cmd_stream_channel(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
-        # Check if user is/was streaming
+        member = after
+        guild = after.guild
         all_activities = before.activities + after.activities
         streaming = False
         for activity in all_activities:
@@ -39,8 +38,6 @@ class cmd_stream_channel(commands.Cog):
             continue
         if not streaming:
             return
-        member = after
-        guild = after.guild
         # Import guild setting
         guild_settings = await settings.parse(guild)
         channel_name = guild_settings.get('feature_flags').get(
@@ -67,6 +64,35 @@ class cmd_stream_channel(commands.Cog):
                 if member in old_message.mentions:
                     await old_message.delete()
             return
+
+        # Check if member in voice channel in current guild
+        dm_message = f':exploding_head: Wow, cool stream!\n\nIt will be announced in #{channel_name} on {guild} if you join a voice channel on our server during your stream :)'
+        if member.voice == None:
+            # Remove post
+            for old_message in messages:
+                if member in old_message.mentions:
+                    await old_message.delete()
+            # Send DM
+            dm_channel = await member.create_dm()
+            time_check = datetime.utcnow() - timedelta(minutes=15)
+            dm_history = await dm_channel.history(after=time_check).flatten()
+            if dm_history:
+                return
+            await dm_channel.send(dm_message)
+            return
+        elif member.voice.channel.guild != guild:
+            # Remove post
+            for old_message in messages:
+                if member in old_message.mentions:
+                    await old_message.delete()
+            # Send DM
+            dm_channel = await member.create_dm()
+            time_check = datetime.utcnow() - timedelta(minutes=15)
+            dm_history = await dm_channel.history(after=time_check).flatten()
+            if dm_history:
+                return
+            await dm_channel.send(dm_message)
+            return
         # Determine user status change
         was_live = False
         is_live = False
@@ -80,16 +106,15 @@ class cmd_stream_channel(commands.Cog):
                 break
         # If user status was not changed, check for an existing post and skip or make a new one
         if was_live and is_live:
-            logger.log(f'{member} is still streaming')
+            logger.log(f'{guild} {member} is still streaming')
             for old_message in messages:
                 if member in old_message.mentions:
                     logger.log(
                         f'there is a post for {member} already, skipping')
                     return
-                else:
-                    logger.log(f'making a new post for {member}')
-                    await channel.send(f'@here\n{member.mention} is live on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
-                    return
+            if channel:
+                logger.log(f'making a new post for {member}')
+                await channel.send(f'@here\n{member.mention} is live on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
             return
         # If user stopped streaming, delete message
         if was_live and not is_live:
@@ -102,22 +127,45 @@ class cmd_stream_channel(commands.Cog):
         # If user started streaming, make a new post
         if not was_live and is_live:
             logger.log(f'{member} started streaming!')
+            # Send announcement
             if channel:
-                time_after = datetime.now() - timedelta(hours=12)
-                messages = await channel.history(after=time_after).flatten()
-                post = True
+                messages = await channel.history().flatten()
             else:
                 messages = []
-                post = False
-            if post:
-                for old_message in messages:
-                    if member in old_message.mentions:
-                        logger.log(f'deleting post for {member}')
-                        await old_message.delete()
+            for old_message in messages:
+                if member in old_message.mentions:
+                    logger.log(f'deleting post for {member}')
+                    await old_message.delete()
+            if channel:
                 await channel.send(f'@here\n{member.mention} is live on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
             return
         else:
             pass
+
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member, before, after):
+        guild = member.guild
+        all_activities = member.activities
+        streaming = False
+        for activity in all_activities:
+            if isinstance(activity, discord.Streaming):
+                streaming = True
+                break
+            continue
+        if not streaming:
+            return
+        if after.channel is None:
+            role = discord.utils.get(guild.roles, name='refresh_event')
+            await member.add_roles(role)
+            await asyncio.sleep(1)
+            await member.remove_roles(role)
+            return
+        if after.channel.guild is guild:
+            role = discord.utils.get(guild.roles, name='refresh_event')
+            await member.add_roles(role)
+            await asyncio.sleep(1)
+            await member.remove_roles(role)
+            return
 
 
 def setup(client):

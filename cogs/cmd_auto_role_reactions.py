@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands, tasks
 import os
 import re
-import rapidjson
 
 from cogs.core_logger.logger import Logger
 from cogs.core_multi_guild.guild_settings_parser import GetSettings
