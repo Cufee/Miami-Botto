@@ -120,7 +120,7 @@ class cmd_stream_channel(commands.Cog):
         # If user stopped streaming, wait and check their status again
         if was_live and not is_live:
             logger.log(f'{member} stopped streaming')
-            asyncio.sleep(600)
+            await asyncio.sleep(600)
             current_activities = member.activities
             messages = await channel.history().flatten()
             is_live = False
