@@ -14,3 +14,4 @@ cogs/template
 
 #Cogs data
 cogs/cmd_auto_role_reactions/*.txt
+cogs/core_multi_guild/cache/*
