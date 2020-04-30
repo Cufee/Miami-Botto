@@ -7,17 +7,13 @@ import datetime
 from cogs.core_logger.logger import Logger
 logger = Logger()
 
-# Setup Guild
-guild_id = ''
-
 
 # Secret Chats cog
-
 class secret_chats(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-        # self.message_cleanup.start()
+        self.message_cleanup.start()
 
     # Events
     @commands.Cog.listener()
@@ -28,7 +24,7 @@ class secret_chats(commands.Cog):
     async def on_message(self, message):
         channel = message.channel
         message_text = message.clean_content
-        if channel.name == 'selfie-channel' and ':beta_feature:' not in message_text:
+        if channel.name == 'selfie-channel':
             attachments = message.attachments
             re_filter = re.compile('https:\/\/....')
             if re_filter.match(message_text):
@@ -36,12 +32,15 @@ class secret_chats(commands.Cog):
             if not attachments:
                 emoji = discord.utils.get(
                     message.guild.emojis, name='trg_removing30')
-                await message.add_reaction(emoji)
+                # Adding a reaction 30 minutes before deletion
                 await asyncio.sleep(1800)
+                await message.add_reaction(emoji)
+                # Waiting 24 hours before deleting message
+                await asyncio.sleep(84600)
                 await message.delete()
             else:
                 emoji = discord.utils.get(
-                    message.guild.emojis, name='beta_feature')
+                    message.guild.emojis, name='saved')
                 await message.add_reaction(emoji)
 
     @commands.Cog.listener()
@@ -55,9 +54,9 @@ class secret_chats(commands.Cog):
         member = discord.utils.find(
             lambda m: m.id == payload.user_id, guild.members)
         reaction = discord.utils.get(
-            message.guild.emojis, name='trg_removing30')
+            message.guild.emojis, name='remove')
         for role in member.roles:
-            if role.name[-4:] == '_mod' and 'trg_removing' in payload.emoji.name:
+            if role.name[-4:] == '_mod' and 'remove' in payload.emoji.name:
                 await message.add_reaction(reaction)
                 await message.remove_reaction(payload.emoji, member)
                 break
@@ -79,9 +78,10 @@ class secret_chats(commands.Cog):
                     messages = await channel.history().flatten()
                     all_messages = all_messages + messages
             for message in all_messages:
-                remove_emoji = 'trg_removing'
+                remove_emoji = reaction = discord.utils.get(
+                    message.guild.emojis, name='remove')
                 for reaction in message.reactions:
-                    if remove_emoji in str(reaction) and reaction.me:
+                    if remove_emoji == reaction and reaction.me:
                         await reaction.message.delete()
             logger.log('clean up done')
         except:

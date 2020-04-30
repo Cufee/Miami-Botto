@@ -66,6 +66,7 @@ class cmd_stream_channel(commands.Cog):
             return
 
         # Generates a lot of spam, disabling
+        # Discord generates too many events and this code will spam DMs due to this. Setting a cool down timer did not help to resolve this issue, as those events drop at the same time
         # # Check if member in voice channel in current guild
         # dm_message = f':exploding_head: Wow, cool stream!\n\nIt will be announced in #{channel_name} on {guild} if you join a voice channel on our server during your stream :)'
         # if member.voice == None:
@@ -94,6 +95,7 @@ class cmd_stream_channel(commands.Cog):
         #         return
         #     await dm_channel.send(dm_message)
         #     return
+
         # # Determine user status change
         was_live = False
         is_live = False
@@ -115,15 +117,17 @@ class cmd_stream_channel(commands.Cog):
                     return
             if channel:
                 logger.log(f'making a new post for {member}')
-                await channel.send(f'@here\n{member.mention} is live on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
+                await channel.send(f'@here\n{member.mention} is playing {activity.game} on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
             return
         # If user stopped streaming, wait and check their status again
         if was_live and not is_live:
             logger.log(f'{member} stopped streaming')
-            await asyncio.sleep(600)
+            # Waiting
+            await asyncio.sleep(300)
             current_activities = member.activities
             messages = await channel.history().flatten()
             is_live = False
+            # Check current status again, to make sure the channel is actually offline
             for activity in current_activities:
                 if isinstance(activity, discord.Streaming):
                     is_live = True
@@ -147,11 +151,12 @@ class cmd_stream_channel(commands.Cog):
                     logger.log(f'deleting post for {member}')
                     await old_message.delete()
             if channel:
-                await channel.send(f'@here\n{member.mention} is live on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
+                await channel.send(f'@here\n{member.mention} is playing {activity.game} on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
             return
         else:
             pass
 
+    # Refresh user status event on channel join and leave, disabled due to issues with code above
     # @commands.Cog.listener()
     # async def on_voice_state_update(self, member, before, after):
     #     guild = member.guild
