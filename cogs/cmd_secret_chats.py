@@ -86,8 +86,8 @@ class secret_chats(commands.Cog):
                 for reaction in message.reactions:
                     users = await reaction.users().flatten()
                     if self.client.user in users:
-                        print(reaction)
-                    if remove_emoji is reaction and self.client.user in users:
+                        print(reaction, remove_emoji)
+                    if reaction is remove_emoji and self.client.user in users:
                         await reaction.message.delete()
             logger.log('clean up done')
         except:
