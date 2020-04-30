@@ -85,7 +85,8 @@ class secret_chats(commands.Cog):
                     message.guild.emojis, name='remove')
                 for reaction in message.reactions:
                     users = await reaction.users().flatten()
-                    print(reaction, users)
+                    if self.client.user in users:
+                        print(reaction)
                     if remove_emoji is reaction and self.client.user in users:
                         await reaction.message.delete()
             logger.log('clean up done')
