@@ -33,11 +33,11 @@ class secret_chats(commands.Cog):
                 # Waiting 24 hours before deleting message
                 await asyncio.sleep(84600)
                 emoji = discord.utils.get(
-                    message.guild.emojis, name='trg_removing30')
+                    message.guild.emojis, name='remove')
                 # Adding a reaction 30 minutes before deletion
                 await message.add_reaction(emoji)
-                await asyncio.sleep(1800)
-                await message.delete()
+                # await asyncio.sleep(1800)
+                # await message.delete()
             else:
                 emoji = discord.utils.get(
                     message.guild.emojis, name='saved')
@@ -66,22 +66,25 @@ class secret_chats(commands.Cog):
     @tasks.loop(minutes=15)
     async def message_cleanup(self):
         logger.log('clean up')
-        time_interval = 31
-        time_now = datetime.datetime.now()
-        time_before = time_now - datetime.timedelta(minutes=time_interval)
-        time_after = time_now - datetime.timedelta(minutes=time_interval*3)
+        time_interval_before = 31  # minutes
+        time_interval_after = 24  # hours
+        time_now = datetime.datetime.utcnow()
+        time_before = time_now - \
+            datetime.timedelta(minutes=time_interval_before)
+        time_after = time_now - datetime.timedelta(hours=time_interval_after)
         all_channels = self.client.get_all_channels()
         all_messages = []
         try:
             for channel in all_channels:
                 if isinstance(channel, discord.channel.TextChannel):
-                    messages = await channel.history().flatten()
-                    all_messages = all_messages + messages
+                    messages = await channel.history(before=time_before, after=time_after).flatten()
+                    all_messages += messages
             for message in all_messages:
                 remove_emoji = reaction = discord.utils.get(
                     message.guild.emojis, name='remove')
                 for reaction in message.reactions:
-                    if remove_emoji == reaction and reaction.me:
+                    users = await reaction.users().flatten()
+                    if remove_emoji is reaction and self.client.user in users:
                         await reaction.message.delete()
             logger.log('clean up done')
         except:
