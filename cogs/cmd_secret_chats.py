@@ -63,14 +63,14 @@ class secret_chats(commands.Cog):
 
     # Tasks
 
-    @tasks.loop(minutes=15)
+    @tasks.loop(hours=1)
     async def message_cleanup(self):
         logger.log('clean up')
-        time_interval_before = 31  # minutes
-        time_interval_after = 24  # hours
+        time_interval_before = 0.5  # hours
+        time_interval_after = 26  # hours
         time_now = datetime.datetime.utcnow()
         time_before = time_now - \
-            datetime.timedelta(minutes=time_interval_before)
+            datetime.timedelta(hours=time_interval_before)
         time_after = time_now - datetime.timedelta(hours=time_interval_after)
         all_channels = self.client.get_all_channels()
         all_messages = []
@@ -79,7 +79,6 @@ class secret_chats(commands.Cog):
                 if isinstance(channel, discord.channel.TextChannel):
                     messages = await channel.history(before=time_before, after=time_after).flatten()
                     all_messages += messages
-            print(len(messages))
             for message in all_messages:
                 remove_emoji = reaction = discord.utils.get(
                     message.guild.emojis, name='remove')
