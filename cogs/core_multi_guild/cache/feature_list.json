@@ -29,7 +29,7 @@
     "cmd_secret_chats": {
         "name": "Secret Chats",
         "enabled_master": true,
-        "enabled_staging": false,
+        "enabled_staging": true,
         "default_settings": {
             "name": "Secret Chats",
             "enabled": false
@@ -47,7 +47,7 @@
     "cmd_stream_channel": {
         "name": "Stream Announcements",
         "enabled_master": true,
-        "enabled_staging": true,
+        "enabled_staging": false,
         "default_settings": {
             "name": "Stream Announcements",
             "enabled": false
