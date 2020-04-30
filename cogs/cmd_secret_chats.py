@@ -79,11 +79,13 @@ class secret_chats(commands.Cog):
                 if isinstance(channel, discord.channel.TextChannel):
                     messages = await channel.history(before=time_before, after=time_after).flatten()
                     all_messages += messages
+            print(len(messages))
             for message in all_messages:
                 remove_emoji = reaction = discord.utils.get(
                     message.guild.emojis, name='remove')
                 for reaction in message.reactions:
                     users = await reaction.users().flatten()
+                    print(reaction, users)
                     if remove_emoji is reaction and self.client.user in users:
                         await reaction.message.delete()
             logger.log('clean up done')
