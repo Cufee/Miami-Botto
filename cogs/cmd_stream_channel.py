@@ -117,7 +117,7 @@ class cmd_stream_channel(commands.Cog):
                     return
             if channel:
                 logger.log(f'making a new post for {member}')
-                await channel.send(f'@here\n{member.mention} is playing {activity.game} on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
+                await channel.send(f'{member.mention} is playing {activity.game} on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
             return
         # If user stopped streaming, wait and check their status again
         if was_live and not is_live:
@@ -151,7 +151,7 @@ class cmd_stream_channel(commands.Cog):
                     logger.log(f'deleting post for {member}')
                     await old_message.delete()
             if channel:
-                await channel.send(f'@here\n{member.mention} is playing {activity.game} on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
+                await channel.send(f'{member.mention} is playing {activity.game} on {activity.platform}!\n{activity.name.strip()}\n{activity.url}')
             return
         else:
             pass
