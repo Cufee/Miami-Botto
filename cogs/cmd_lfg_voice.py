@@ -6,7 +6,7 @@ from cogs.core_logger.logger import Logger
 logger = Logger()
 
 
-async def generate_cid(stringLength=4):
+def generate_cid(stringLength=4):
     lettersAndDigits = string.ascii_letters + string.digits
     return ''.join((random.choice(lettersAndDigits) for i in range(stringLength)))
 
@@ -59,7 +59,7 @@ class lfg_voice(commands.Cog):
                 await message.delete()
                 return
 
-            channel_name = f'LFG Voice {await generate_cid()}'
+            channel_name = f'LFG Voice {generate_cid()}'
             voice_channel = await category.create_voice_channel(channel_name, user_limit=channel_size)
             voice_channel_invite = await voice_channel.create_invite(reason=f'LFG Voice channel requested by {member.mention}', unique=False)
             await message.channel.send(f'{member.mention} is looking for a group in {category.name}!\n{user_message}{voice_channel_invite}')
