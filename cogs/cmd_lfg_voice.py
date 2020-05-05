@@ -55,14 +55,14 @@ class lfg_voice(commands.Cog):
             if member.voice.channel.name.startswith('LFG Voice'):
                 await member.voice.channel.edit(user_limit=channel_size)
                 voice_channel_invite = await member.voice.channel.create_invite(reason=f'LFG channel requested by {member.name}', unique=False)
-                await message.channel.send(f'{member.mention} is looking for a group in {category.name}!\n{user_message}{voice_channel_invite}')
+                await message.channel.send(f'{member.mention} is looking for a group in {category.name}!\n{user_message}{voice_channel_invite}', delete_after=300)
                 await message.delete()
                 return
 
             channel_name = f'LFG Voice {generate_cid()}'
             voice_channel = await category.create_voice_channel(channel_name, user_limit=channel_size)
             voice_channel_invite = await voice_channel.create_invite(reason=f'LFG Voice channel requested by {member.mention}', unique=False)
-            await message.channel.send(f'{member.mention} is looking for a group in {category.name}!\n{user_message}{voice_channel_invite}')
+            await message.channel.send(f'{member.mention} is looking for a group in {category.name}!\n{user_message}{voice_channel_invite}', delete_after=300)
             await member.move_to(voice_channel, reason='LFG Voice channel requested by {member.name}')
             await message.delete()
             return
