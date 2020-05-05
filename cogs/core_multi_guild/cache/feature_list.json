@@ -1,4 +1,13 @@
 {
+    "cmd_role_weight": {
+        "name": "Message Votes",
+        "enabled_master": true,
+        "enabled_staging": false,
+        "default_settings": {
+            "name": "Role Weights",
+            "enabled": false
+        }
+    },
     "cmd_message_votes": {
         "name": "Message Votes",
         "enabled_master": true,
@@ -29,7 +38,7 @@
     "cmd_secret_chats": {
         "name": "Secret Chats",
         "enabled_master": true,
-        "enabled_staging": true,
+        "enabled_staging": false,
         "default_settings": {
             "name": "Secret Chats",
             "enabled": false
