@@ -15,7 +15,7 @@ class role_weight(commands.Cog):
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
-        logger.log(f'role_weight cog is ready.')
+        logger.log(f'[Beta] role_weight cog is ready.')
 
     # Commands
     @commands.command(hidden=True)

@@ -24,7 +24,7 @@ class poll_channels(commands.Cog):
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
-        logger.log(f'role_reactions cog is ready.')
+        logger.log(f'[Beta] poll_channels cog is ready.')
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):

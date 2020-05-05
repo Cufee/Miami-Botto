@@ -23,7 +23,7 @@ class cmd_stream_channel(commands.Cog):
     # @commands.Cog.listener()
     @commands.Cog.listener()
     async def on_ready(self):
-        logger.log(f'cmd_stream_channel cog is ready.')
+        logger.log(f'[Beta] cmd_stream_channel cog is ready.')
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):

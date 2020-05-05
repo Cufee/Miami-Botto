@@ -49,7 +49,7 @@ class auto_role_reactions(commands.Cog):
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
-        logger.log(f'role_reactions cog is ready.')
+        logger.log(f'[Beta V2] role_reactions cog is ready.')
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):

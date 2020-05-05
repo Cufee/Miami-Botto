@@ -42,7 +42,7 @@ class secret_chats(commands.Cog):
     # Tasks
     @tasks.loop(hours=1)
     async def message_cleanup(self):
-        logger.log('secret chat clean up starting')
+        logger.log('[Beta] secret chat clean up starting')
         time_interval_before = 24  # hours
         time_interval_after = 26  # hours
         time_now = datetime.datetime.utcnow()

@@ -46,7 +46,7 @@ class simp(commands.Cog):
     # @commands.Cog.listener()
     @commands.Cog.listener()
     async def on_ready(self):
-        logger.log(f'simp_v2 cog is ready.')
+        logger.log(f'[Beta] simp_v2 cog is ready.')
 
     @commands.Cog.listener()
     async def on_message(self, message):

@@ -1,4 +1,13 @@
 {
+    "cmd_lfg_voice": {
+        "name": "Message Votes",
+        "enabled_master": true,
+        "enabled_staging": true,
+        "default_settings": {
+            "name": "LFG Voice Channels",
+            "enabled": false
+        }
+    },
     "cmd_role_weight": {
         "name": "Message Votes",
         "enabled_master": true,

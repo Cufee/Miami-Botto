@@ -18,7 +18,7 @@ class message_votes(commands.Cog):
     # @commands.Cog.listener()
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'help cog is ready.')
+        print(f'[Beta] help cog is ready.')
 
     # Events
     # @commands.Cog.listener()
