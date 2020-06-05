@@ -50,7 +50,7 @@
             },
             "cmd_secret_chats": {
                 "name": "Secret Chats",
-                "enabled": true
+                "enabled": false
             },
             "cmd_simp_v2": {
                 "name": "Simp Detector",
